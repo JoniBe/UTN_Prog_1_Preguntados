@@ -13,10 +13,16 @@ fondo_menu = pygame.image.load("assets/fondo_menu.jpeg")
 #redimensionado del fondo
 fondo_menu = pygame.transform.scale(fondo_menu, VENTANA)
 
+#boton imagen
+boton_img = pygame.image.load("assets/play_boton.jpg")
+boton_rectangulo = boton_img.get_rect()
+
 icono = pygame.image.load("assets/icono.png")
+
 pygame.display.set_icon(icono)
 clock = pygame.time.Clock()
 
+#funcion que mescla las pregunta
 lista_preguntas = leer_csv("preguntas.csv")
 
 
@@ -30,16 +36,25 @@ def abrir_menu():
     global run
 
     while run_menu:
-
+        boton_rectangulo.centerx = ANCHO/2
+        boton_rectangulo.centery = ALTO/2 
         for evento in pygame.event.get():
             #cerrar juego estableciendo las 2 variables en false
             if evento.type == pygame.QUIT:
                 run = False
                 run_menu = False
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                  pos = pygame.mouse.get_pos()
+                  if boton_rectangulo.collidepoint(pos):
+                      print("el juego empezo")
+                      run_menu = False
     
 
-        pantalla.blit(fondo_menu, (0,0))
+        
 
+        
+        pantalla.blit(fondo_menu, (0,0))
+        pantalla.blit(boton_img,(boton_rectangulo.x, boton_rectangulo.y))
 
 
         #actualziacion de pantalla
