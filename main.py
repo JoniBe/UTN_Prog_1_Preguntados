@@ -8,6 +8,7 @@ icono = pygame.image.load("icono.png")
 pygame.display.set_icon(icono)
 clock = pygame.time.Clock()
 
+lista_preguntas = leer_csv("preguntas.csv")
 
 run = True
 
@@ -17,7 +18,15 @@ while run:
         #cerrar juego
         if evento.type == pygame.QUIT:
             run = False
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+            print(lista_preguntas[4])
     
+
+    #detectar pulso constante de taclas
+    teclas = pygame.key.get_pressed()
+
+    if teclas[pygame.K_3]:
+        print("se toco la tecla 3")
 
 
     
