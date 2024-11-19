@@ -3,8 +3,17 @@ from Constantes import *
 from Funciones import *
 
 pygame.init()
+
+#se establece ancho y alto de la pantalla
 pantalla = pygame.display.set_mode(VENTANA)
-icono = pygame.image.load("icono.png")
+
+#se carga imagen del fondo del menu
+
+fondo_menu = pygame.image.load("assets/fondo_menu.jpeg")
+#redimensionado del fondo
+fondo_menu = pygame.transform.scale(fondo_menu, VENTANA)
+
+icono = pygame.image.load("assets/icono.png")
 pygame.display.set_icon(icono)
 clock = pygame.time.Clock()
 
@@ -29,7 +38,7 @@ def abrir_menu():
                 run_menu = False
     
 
-        pantalla.fill(COLOR_ROJO)
+        pantalla.blit(fondo_menu, (0,0))
 
 
 
