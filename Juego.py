@@ -28,7 +28,9 @@ centro_pantalla_alto = ALTO/2
 sortear_lista(lista_preguntas)
 
 
-def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event])-> str:
+
+
+def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], juego)-> str:
     retorno = "Juego"
     #print(lista_preguntas[0])
     for evento in cola_eventos:
@@ -44,7 +46,6 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event])->
                     print("Correcto")
                 else:
                     print("incorrecto")
-                
             elif botones[1]["rectangulo"].collidepoint(pos):
                 
                 if lista_preguntas[0]["correcta"] == str(2):
@@ -58,10 +59,10 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event])->
                 if lista_preguntas[0]["correcta"] == str(3):
 
                     print("Correcto")
+                    juego["puntuacion"] += 3
                 else:
                     print("incorrecto")
             elif botones[3]["rectangulo"].collidepoint(pos):
-                
                 if lista_preguntas[0]["correcta"] == str(4):
 
                     print("Correcto")

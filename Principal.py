@@ -15,7 +15,8 @@ corriendo = True
 
 ventana_actual = "Menu"
 
-puntos = 0
+datos_juego = {"puntuacion":0,"vidas":CANTIDAD_VIDAS,"usuario":""}
+
 
 while corriendo:
 
@@ -24,7 +25,7 @@ while corriendo:
     if ventana_actual == "Menu":
         ventana_actual = abrir_menu_juego(screen, eventos)
     elif ventana_actual == "Juego":
-        ventana_actual = abrir_juego(screen,eventos)
+        ventana_actual = abrir_juego(screen,eventos, datos_juego)
     elif ventana_actual == "Salir":
         corriendo = False
 
