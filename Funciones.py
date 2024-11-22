@@ -9,7 +9,7 @@ def leer_csv(archivo:str)-> list:
 
         for line in file.readlines():
             pregunta = line.split(",")
-            diccionario = {"pregunta": pregunta[0].replace("Â",""), "respuesta_1" : pregunta[1], "respuesta_2" : pregunta[2], "respuesta_3" : pregunta[3], "respuesta_4" : pregunta[4], "puntos" : pregunta[5].replace("\n", "")}
+            diccionario = {"pregunta": pregunta[0].replace("Â",""), "respuesta_1" : pregunta[1], "respuesta_2" : pregunta[2], "respuesta_3" : pregunta[3], "respuesta_4" : pregunta[4], "correcta" : pregunta[5].replace("\n", "")}
             lista.append(diccionario)
     return lista
 

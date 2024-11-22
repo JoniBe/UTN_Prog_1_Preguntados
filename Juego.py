@@ -13,8 +13,7 @@ boton_preguntas = pygame.image.load("assets/boton_pregunta.png")
 #establecer fuente y tamaño
 arial = pygame.font.SysFont("Arial Narrow",25)
 
-#aca se escala la imagen del boton y se le crea un rectangulo o hitbox
-
+#crear botones
 
 botones = crear_botones(boton_preguntas,300,70,4)
 
@@ -25,19 +24,50 @@ centro_pantalla_alto = ALTO/2
 
 
 
-sortear_lista(lista_preguntas)
 
+sortear_lista(lista_preguntas)
 
 
 def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event])-> str:
     retorno = "Juego"
-
+    #print(lista_preguntas[0])
     for evento in cola_eventos:
 
         if evento.type == pygame.QUIT:
             retorno = "Salir"
         if evento.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
+
+            if botones[0]["rectangulo"].collidepoint(pos):
+                if lista_preguntas[0]["correcta"] == str(1):
+
+                    print("Correcto")
+                else:
+                    print("incorrecto")
+                
+            elif botones[1]["rectangulo"].collidepoint(pos):
+                
+                if lista_preguntas[0]["correcta"] == str(2):
+
+                    print("Correcto")
+                else:
+                    print("incorrecto")
+
+            elif botones[2]["rectangulo"].collidepoint(pos):
+                
+                if lista_preguntas[0]["correcta"] == str(3):
+
+                    print("Correcto")
+                else:
+                    print("incorrecto")
+            elif botones[3]["rectangulo"].collidepoint(pos):
+                
+                if lista_preguntas[0]["correcta"] == str(4):
+
+                    print("Correcto")
+                else:
+                    print("incorrecto")
+
 
     
     #posicionamiento de botones
