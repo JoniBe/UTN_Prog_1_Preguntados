@@ -44,6 +44,7 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], j
                 if lista_preguntas[0]["correcta"] == str(1):
 
                     print("Correcto")
+                    juego["puntuacion"] += PUNTUACION_ACIERTO
                 else:
                     print("incorrecto")
             elif botones[1]["rectangulo"].collidepoint(pos):
@@ -51,6 +52,7 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], j
                 if lista_preguntas[0]["correcta"] == str(2):
 
                     print("Correcto")
+                    juego["puntuacion"] += PUNTUACION_ACIERTO
                 else:
                     print("incorrecto")
 
@@ -59,13 +61,14 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], j
                 if lista_preguntas[0]["correcta"] == str(3):
 
                     print("Correcto")
-                    juego["puntuacion"] += 3
+                    juego["puntuacion"] += PUNTUACION_ACIERTO
                 else:
                     print("incorrecto")
             elif botones[3]["rectangulo"].collidepoint(pos):
                 if lista_preguntas[0]["correcta"] == str(4):
 
                     print("Correcto")
+                    juego["puntuacion"] += PUNTUACION_ACIERTO
                 else:
                     print("incorrecto")
 
