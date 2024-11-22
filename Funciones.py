@@ -19,6 +19,23 @@ def sortear_lista(lista:list) -> list:
     return lista_sorteada
 
 
+def crear_botones(imagen,ancho,alto,cantidad)->list:
+
+    lista_botones = []
+
+    for i in range(cantidad):
+        boton_superficie = pygame.transform.scale(imagen, (ancho,alto)) 
+        boton_rectangulo = boton_superficie.get_rect()
+        diccionario = {"superficie": boton_superficie, "rectangulo" : boton_rectangulo}
+        lista_botones.append(diccionario)
+    
+    return lista_botones
+
+def posicionar_botones(posx,posy, objeto):
+    objeto.centery = posy
+    objeto.centerx = posx
+
+
 
 def mostrar_texto(surface, text, pos, font, color=pygame.Color('black')):
     words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
