@@ -1,5 +1,6 @@
 import random
 import pygame
+from Constantes import *
 
 def leer_csv(archivo:str)-> list:
 
@@ -37,20 +38,73 @@ def posicionar_botones(posx,posy, objeto):
 
 
 
-def mostrar_texto(surface, text, pos, font, color=pygame.Color('black')):
-    words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
-    space = font.size(' ')[0]  # The width of a space.
+def mostrar_texto(surface, text, pos, font, color=pygame.Color('black'), line_spacing=5, align='left'):
+    words = text.split(' ')  # Dividimos el texto en palabras
+    space_width = font.size(' ')[0]  # El ancho de un espacio
     max_width, max_height = surface.get_size()
+    
+    # Posición inicial
     x, y = pos
-    for line in words:
-        for word in line:
-            word_surface = font.render(word, False, color)
-            word_width, word_height = word_surface.get_size()
-            if x + word_width >= max_width:
-                x = pos[0]  # Reset the x.
-                y += word_height  # Start on new row.
-            surface.blit(word_surface, (x, y))
-            x += word_width + space
-        x = pos[0]  # Reset the x.
-        y += word_height  # Start on new row.
+    current_line = []
+    current_line_width = 0
 
+    # Calcular alineación
+    if align == 'center':
+        x = (max_width - font.size(text)[0]) // 2  # Centra el texto
+
+    for word in words:
+        word_surface = font.render(word, False, color)
+        word_width, word_height = word_surface.get_size()
+
+        # Si añadir la palabra excede el ancho de la pantalla, cambiamos a la siguiente línea
+        if current_line_width + word_width + (len(current_line) - 1) * space_width > max_width:
+            # Dibujamos la línea anterior
+            for i, w in enumerate(current_line):
+                word_surface = font.render(w, False, color)
+                word_width, word_height = word_surface.get_size()
+                surface.blit(word_surface, (x + sum(font.size(w)[0] + space_width for w in current_line[:i]), y))
+            y += word_height + line_spacing  # Ajusta el espacio entre líneas
+            current_line = [word]
+            current_line_width = word_width
+        else:
+            current_line.append(word)
+            current_line_width += word_width + space_width
+    
+    # Dibujar la última línea
+    for i, w in enumerate(current_line):
+        word_surface = font.render(w, False, color)
+        word_width, word_height = word_surface.get_size()
+        surface.blit(word_surface, (x + sum(font.size(w)[0] + space_width for w in current_line[:i]), y))
+
+
+def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos):
+
+
+    if lista_preguntas[0]["correcta"] == str(btn):
+
+        print(f"Correcto{juego["acertados_seguidos"]}")
+        juego["puntuacion"] += PUNTUACION_ACIERTO
+        juego["acertados_seguidos"] += 1
+
+        if juego["acertados_seguidos"] == 5:
+            juego["vidas"] += 1
+            cantidad_segundos += 20
+
+        if juego["acertados_seguidos"] > 4:
+            juego["acertados_seguidos"] = 0
+            
+        sortear_lista(lista_preguntas)
+    else:
+        print("incorrecto")
+        juego["puntuacion"] += PUNTUACION_ERROR
+        juego["vidas"] -= 1
+        juego["acertados_seguidos"] = 0
+        sortear_lista(lista_preguntas)
+    return cantidad_segundos
+
+def mostrar_respuestas(pantalla,lista_preguntas, botones, mi_fuente):
+
+    mostrar_texto(pantalla,lista_preguntas[0]["respuesta_1"],(botones[0]["rectangulo"].centerx-120, botones[0]["rectangulo"].centery-10),mi_fuente,COLOR_AZUL)
+    mostrar_texto(pantalla,lista_preguntas[0]["respuesta_2"],(botones[1]["rectangulo"].centerx-120, botones[1]["rectangulo"].centery-10),mi_fuente,COLOR_AZUL)
+    mostrar_texto(pantalla,lista_preguntas[0]["respuesta_3"],(botones[2]["rectangulo"].centerx-120, botones[2]["rectangulo"].centery-10),mi_fuente,COLOR_AZUL)
+    mostrar_texto(pantalla,lista_preguntas[0]["respuesta_4"],(botones[3]["rectangulo"].centerx-120, botones[3]["rectangulo"].centery-10),mi_fuente,COLOR_AZUL)

@@ -21,6 +21,9 @@ fondo_menu = pygame.transform.scale(fondo_menu, VENTANA)
 boton_img = pygame.image.load("assets/play_boton.jpg")
 boton_rectangulo = boton_img.get_rect()
 
+#cargamos musica
+pygame.mixer.init()
+pygame.mixer.music.load("assets/cancion_juego.mp3")
 
 
 
@@ -37,12 +40,11 @@ def abrir_menu_juego(pantalla:pygame.surface,cola_eventos:list[pygame.event.Even
         if evento.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             if boton_rectangulo.collidepoint(pos):
-                print("el juego empezo")
+                pygame.mixer.music.play(-1)
                 retorno = "Juego"
     
 
         
-
         
     pantalla.blit(fondo_menu, (0,0))
     pantalla.blit(boton_img,(boton_rectangulo.x, boton_rectangulo.y))

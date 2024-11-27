@@ -11,11 +11,14 @@ pygame.display.set_icon(icono)
 
 clock = pygame.time.Clock()
 
+
+
+
 corriendo = True
 
 ventana_actual = "Menu"
 
-datos_juego = {"puntuacion":0,"vidas":CANTIDAD_VIDAS,"usuario":""}
+datos_juego = {"puntuacion":0,"vidas":CANTIDAD_VIDAS,"usuario":"","acertados_seguidos": 1}
 
 
 while corriendo:
