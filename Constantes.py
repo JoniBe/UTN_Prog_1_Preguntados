@@ -1,3 +1,5 @@
+
+
 COLOR_BLANCO = (255,255,255)
 COLOR_NEGRO = (0,0,0)
 COLOR_VERDE = (0,255,0)
@@ -11,6 +13,11 @@ FPS = 60
 
 TAMAÑO_PREGUNTA = (350,150)
 TAMAÑO_RESPUESTA = (250,60)
+
+centro_pantalla_ancho = ANCHO/2
+centro_pantalla_alto = ALTO/2
+
+
 
 CANTIDAD_VIDAS = 3
 PUNTUACION_ACIERTO = 100

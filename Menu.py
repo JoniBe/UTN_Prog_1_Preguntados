@@ -27,7 +27,7 @@ pygame.mixer.music.load("assets/cancion_juego.mp3")
 
 
 
-def abrir_menu_juego(pantalla:pygame.surface,cola_eventos:list[pygame.event.Event])-> str:
+def abrir_menu_juego(pantalla:pygame.surface,cola_eventos:list[pygame.event.Event],juego)-> str:
     retorno = "Menu"
 
     boton_rectangulo.centerx = ANCHO/2
@@ -41,6 +41,7 @@ def abrir_menu_juego(pantalla:pygame.surface,cola_eventos:list[pygame.event.Even
             pos = pygame.mouse.get_pos()
             if boton_rectangulo.collidepoint(pos):
                 pygame.mixer.music.play(-1)
+                juego["tiempo"] = 30
                 retorno = "Juego"
     
 

@@ -1,6 +1,8 @@
 import random
 import pygame
 from Constantes import *
+import json
+import time
 
 def leer_csv(archivo:str)-> list:
 
@@ -108,3 +110,38 @@ def mostrar_respuestas(pantalla,lista_preguntas, botones, mi_fuente):
     mostrar_texto(pantalla,lista_preguntas[0]["respuesta_2"],(botones[1]["rectangulo"].centerx-120, botones[1]["rectangulo"].centery-10),mi_fuente,COLOR_AZUL)
     mostrar_texto(pantalla,lista_preguntas[0]["respuesta_3"],(botones[2]["rectangulo"].centerx-120, botones[2]["rectangulo"].centery-10),mi_fuente,COLOR_AZUL)
     mostrar_texto(pantalla,lista_preguntas[0]["respuesta_4"],(botones[3]["rectangulo"].centerx-120, botones[3]["rectangulo"].centery-10),mi_fuente,COLOR_AZUL)
+
+def activar_campo(campo,bandera):
+
+    retorno = False
+    pos = pygame.mouse.get_pos()
+    if campo[0]["rectangulo"].collidepoint(pos):
+        retorno = True
+    return retorno
+
+def generar_json(nombre_archivo:str,lista:list) -> bool: 
+    
+    with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
+        contenido = json.load(archivo)
+    contenido.extend(lista)    
+    
+    with open(nombre_archivo,'w') as archivo:
+        json.dump(contenido, archivo, indent=4)
+
+
+def obtener_fecha():
+    # Obtener la hora actual en formato timestamp (segundos desde la época)
+    timestamp = time.time()
+    
+    # Convertir el timestamp en una estructura de tiempo local
+    tiempo_local = time.localtime(timestamp)
+    
+    # Convertir la estructura de tiempo local a una cadena de texto en formato legible
+    fecha_legible = time.strftime("%Y-%m-%d %H:%M:%S", tiempo_local)
+    
+    return fecha_legible
+
+def restablecer_variables(juego):
+    juego["puntuacion"] = 0
+    juego["vidas"] = CANTIDAD_VIDAS
+    juego["acertados_seguidos"] = 1
