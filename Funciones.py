@@ -79,11 +79,11 @@ def mostrar_texto(surface, text, pos, font, color=pygame.Color('black'), line_sp
         surface.blit(word_surface, (x + sum(font.size(w)[0] + space_width for w in current_line[:i]), y))
 
 
-def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos):
+def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_error,sonido_acierto):
 
 
     if lista_preguntas[0]["correcta"] == str(btn):
-
+        reproducir_sonido(sonido_acierto)
         print(f"Correcto{juego["acertados_seguidos"]}")
         juego["puntuacion"] += PUNTUACION_ACIERTO
         juego["acertados_seguidos"] += 1
@@ -97,7 +97,7 @@ def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos):
             
         sortear_lista(lista_preguntas)
     else:
-        print("incorrecto")
+        reproducir_sonido(sonido_error)
         juego["puntuacion"] += PUNTUACION_ERROR
         juego["vidas"] -= 1
         juego["acertados_seguidos"] = 0
@@ -119,14 +119,15 @@ def activar_campo(campo,bandera):
         retorno = True
     return retorno
 
-def generar_json(nombre_archivo:str,lista:list) -> bool: 
+def generar_json(nombre_archivo:str,lista:list,nombre) -> bool: 
+    if len(nombre) > 0:
+
+        with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
+            contenido = json.load(archivo)
+        contenido.extend(lista)    
     
-    with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
-        contenido = json.load(archivo)
-    contenido.extend(lista)    
-    
-    with open(nombre_archivo,'w') as archivo:
-        json.dump(contenido, archivo, indent=4)
+        with open(nombre_archivo,'w') as archivo:
+            json.dump(contenido, archivo, indent=4)
 
 
 def obtener_fecha():
@@ -145,3 +146,7 @@ def restablecer_variables(juego):
     juego["puntuacion"] = 0
     juego["vidas"] = CANTIDAD_VIDAS
     juego["acertados_seguidos"] = 1
+
+def reproducir_sonido(sonido):
+
+    sonido.play()

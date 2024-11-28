@@ -1,4 +1,5 @@
 import pygame
+import pygame.locals
 from Funciones import *
 from Constantes import *
 
@@ -18,7 +19,10 @@ botones = crear_botones(boton_preguntas,350,70,4)
 boton_pregunta = crear_botones(boton_preguntas,400,300,1)
 
 
-#ejes del centro de pantalla
+#importar sonido error y acierto
+pygame.mixer.init()
+error = pygame.mixer.Sound("assets/error_sound.mp3")
+correcto = pygame.mixer.Sound("assets/sound_correcto.mp3")
 
 
 
@@ -66,18 +70,18 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], j
             #detectar colisiones y apartir de ahi evaluar que boon se presiona y tambien si la respeusta es correcta o incorrecta
             if botones[0]["rectangulo"].collidepoint(pos):
 
-                juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,1,juego["tiempo"])
+                juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,1,juego["tiempo"],error, correcto)
 
             elif botones[1]["rectangulo"].collidepoint(pos):
                 
-                juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,2,juego["tiempo"])
+                juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,2,juego["tiempo"],error, correcto)
                 
             elif botones[2]["rectangulo"].collidepoint(pos):
                 
-                juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,3,juego["tiempo"])
+                juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,3,juego["tiempo"],error, correcto)
                 
             elif botones[3]["rectangulo"].collidepoint(pos):
-                juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,4,juego["tiempo"])
+                juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,4,juego["tiempo"],error, correcto)
 
 
     texto = mi_fuente.render(f"SEGUNDOS: {juego["tiempo"]}",False,COLOR_ROJO)

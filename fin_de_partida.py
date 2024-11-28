@@ -55,7 +55,7 @@ def terminar_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event]
                 informacion["fecha"] = obtener_fecha()
                 informacion["nombre"] = nombre
                 lista_puntuacion.append(informacion)
-                generar_json("puntos.json", lista_puntuacion)
+                generar_json("puntos.json", lista_puntuacion, nombre)
 
                 #restablecemos las variables
                 restablecer_variables(juego)
