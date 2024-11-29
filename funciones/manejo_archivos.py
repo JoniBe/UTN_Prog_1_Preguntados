@@ -1,19 +1,16 @@
-import modelos as modelos
-import constantes
+from modelos.pregunta import Pregunta
+from Constantes import PREGUNTAS_CSV_PATH
 import os
 
-def leer_csv_preguntas() -> list[modelos.Pregunta]:
+def leer_csv_preguntas() -> list[Pregunta]:
     lista_preguntas = []
     
-    if os.path.exists(constantes.PREGUNTAS_CSV_PATH):
-        # Falsa lectura -> Para evitar recorrer en el for de abajo, la cabecera
-        archivo.readline()
-
-        with open(constantes.PREGUNTAS_CSV_PATH,"r") as archivo:
+    if os.path.exists(PREGUNTAS_CSV_PATH):
+        with open(PREGUNTAS_CSV_PATH,"r") as archivo:
             for linea in archivo:
                 linea_aux = linea.replace("\n","")
                 lista_valores = linea_aux.split(",")
-                mi_pregunta = modelos.Pregunta(lista_valores[0],lista_valores[1:5],lista_valores[5])
+                mi_pregunta = Pregunta(lista_valores[0], lista_valores[1:5],lista_valores[5])
                 lista_preguntas.append(mi_pregunta)
     else:
         return False
