@@ -3,6 +3,7 @@ import pygame
 from Constantes import *
 import json
 import time
+from modelos.pregunta import Pregunta
 
 def leer_csv(archivo:str)-> list:
 
@@ -17,7 +18,6 @@ def leer_csv(archivo:str)-> list:
     return lista
 
 def sortear_lista(lista:list) -> list:
-
     lista_sorteada = random.shuffle(lista)
     return lista_sorteada
 
@@ -80,11 +80,9 @@ def mostrar_texto(surface, text, pos, font, color=pygame.Color('black'), line_sp
 
 
 def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_error,sonido_acierto):
-
-
     if lista_preguntas[0]["correcta"] == str(btn):
         reproducir_sonido(sonido_acierto)
-        print(f"Correcto{juego["acertados_seguidos"]}")
+        print(f"Correcto{juego['acertados_seguidos']}")
         juego["puntuacion"] += PUNTUACION_ACIERTO
         juego["acertados_seguidos"] += 1
 
@@ -148,5 +146,39 @@ def restablecer_variables(juego):
     juego["acertados_seguidos"] = 1
 
 def reproducir_sonido(sonido):
-
     sonido.play()
+
+def mostrar_pregunta_en_contenedor(contenedor: pygame.Surface, pregunta: str):
+    # Dividir el texto en palabras
+    palabras = pregunta.split()
+    lineas = []
+    linea_actual = []
+    ancho_contenedor = contenedor.get_width() - 80  # Margen de 40px a cada lado
+        
+    # Crear líneas que se ajusten al ancho
+    for palabra in palabras:
+        linea_prueba = ' '.join(linea_actual + [palabra])
+        ancho_texto = FUENTE_20.size(linea_prueba)[0]
+
+        if ancho_texto <= ancho_contenedor:
+            linea_actual.append(palabra)
+        else:
+            lineas.append(' '.join(linea_actual))
+            linea_actual = [palabra]
+        
+    if linea_actual:
+        lineas.append(' '.join(linea_actual))
+        
+    # Calcular altura total del texto
+    altura_linea = FUENTE_20.get_height()
+    altura_total = len(lineas) * altura_linea
+    
+    # Posición inicial Y centrada
+    y_inicial = (contenedor.get_height() - altura_total) // 2
+    
+    # Renderizar cada línea centrada
+    for i, linea in enumerate(lineas):
+        superficie_texto = FUENTE_20.render(linea, True, COLOR_AZUL)
+        x_centrado = (contenedor.get_width() - superficie_texto.get_width()) // 2
+        y_pos = y_inicial + (i * altura_linea)
+        contenedor.blit(superficie_texto, (x_centrado, y_pos))
