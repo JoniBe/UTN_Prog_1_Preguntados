@@ -76,15 +76,15 @@ class Partida:
         posicion_x = calcular_centro_horizontal(contenedor_puntuacion, puntuacion)
         posicion_y = calcular_centro_vertical(contenedor_puntuacion, puntuacion)
         contenedor_puntuacion.blit(puntuacion, (posicion_x, posicion_y))
-        self.ventana.blit(contenedor_puntuacion, (300, 10))
+        self.ventana.blit(contenedor_puntuacion, (calcular_centro_horizontal(self.ventana, contenedor_puntuacion), 10))
 
-    def renderizar_fondo(self):
-        fondo_juego = pygame.transform.scale(BACKGROUND_PARTIDA, VENTANA_MEDIDA)
+    def renderizar_fondo(self, fondo: pygame.Surface):
+        fondo_juego = pygame.transform.scale(fondo, VENTANA_MEDIDA)
         self.ventana.blit(fondo_juego, (0,0))
         
-    def renderizar(self):
+    def renderizar_partida_a_jugar(self):
         # Renderizar fondo
-        self.renderizar_fondo()
+        self.renderizar_fondo(BACKGROUND_PARTIDA)
 
         # Agregar botones
         self.renderizar_botones()
@@ -106,7 +106,7 @@ class Partida:
         self.posicion.y = calcular_centro_vertical(self.ventana, self.ventana)        
         self.ventana.blit(self.ventana, (self.posicion.x, self.posicion.y))
 
-    def ejecutar(self, cola_eventos: list[pygame.event.Event]) -> str:
+    def jugar(self, cola_eventos: list[pygame.event.Event]) -> str:
         retorno = self.ventana_actual
 
         if self.vidas == 0:
@@ -124,7 +124,85 @@ class Partida:
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 self.manejar_evento_click(evento)
 
-        self.renderizar()
+        self.renderizar_partida_a_jugar()
+
+        return retorno
+    
+    def renderizar_campo(self):
+        campo = CAMPO_USUARIO.copy()
+        campo = pygame.transform.scale(campo, (400, 64))
+        posicion_x = VENTANA_CENTRO_WIDTH - campo.get_width() // 2
+        posicion_y = 400
+        self.ventana.blit(campo, (posicion_x, posicion_y))
+    
+    def renderizar_boton_aceptar(self):
+        boton_aceptar = Boton('ACEPTAR', Coordenada(VENTANA_CENTRO_WIDTH, (0, 0)), "JUEGO")
+        pass
+    
+    def renderizar_partida_terminada(self):
+        # Renderizar fondo
+        self.renderizar_fondo(BACKGROUND_PARTIDA_TERMINADA)
+
+        # Renderizar puntuacion
+        self.renderizar_puntuacion()
+
+        # Renderizar campo
+        self.renderizar_campo()
+
+        # Renderizar boton Aceptar
+        self.renderizar_boton_aceptar()
+
+        # Renderizar texto
+
+        # texto_renderizado = FUENTE_20.render(self.usuario, True, COLOR_ROJO)
+        # aceptar_renderizado = FUENTE_20.render("Aceptar", True, COLOR_ROJO)        
+
+        # posicionar_botones(VENTANA_CENTRO_WIDTH, VENTANA_CENTRO_HEIGHT, campo[0]["rectangulo"])
+        # posicionar_botones(VENTANA_CENTRO_WIDTH, VENTANA_CENTRO_HEIGHT + 100, aceptar[0]["rectangulo"])
+
+        # self.ventana.blit(fondo_fin_resize,(0,0))
+        # self.ventana.blit(campo[0]["superficie"],(campo[0]["rectangulo"].x, campo[0]["rectangulo"].y))
+        # self.ventana.blit(aceptar[0]["superficie"],(aceptar[0]["rectangulo"].x, aceptar[0]["rectangulo"].y))
+
+        # self.ventana.blit(texto_renderizado,(campo[0]["rectangulo"].centerx-170, campo[0]["rectangulo"].centery-20))
+        # self.ventana.blit(aceptar_renderizado,(aceptar[0]["rectangulo"].centerx-60, aceptar[0]["rectangulo"].centery-20))
+
+    def terminar(self, cola_eventos: list[pygame.event.Event]) -> str:
+        retorno = self.ventana_actual
+        
+        for evento in cola_eventos:
+            if evento.type == pygame.QUIT:
+                retorno = VENTANA_SALIR
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                pass
+                # bandera_camnpo1 = activar_campo(campo, bandera_camnpo1)
+            if evento.type == pygame.KEYDOWN:
+                letra_presionada = str(evento.unicode)
+                if evento.key == pygame.K_BACKSPACE:
+                    nombre = nombre[:-1]
+                elif letra_presionada and len(nombre) < 20 and not(evento.key == pygame.K_BACKSPACE):
+                    letra_presionada
+                    nombre += letra_presionada
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                # if aceptar[0]["rectangulo"].collidepoint(pos):
+                    
+                #     #guardamos datos en json
+                #     lista_puntuacion = []
+                #     informacion = {}
+                #     informacion["puntos"] = juego["puntuacion"]
+                #     informacion["fecha"] = obtener_fecha()
+                #     informacion["nombre"] = nombre
+                #     lista_puntuacion.append(informacion)
+                #     generar_json("puntos.json", lista_puntuacion, nombre)
+
+                #     #restablecemos las variables
+                #     restablecer_variables(juego)
+
+                #     nombre = ""
+                #     retorno = VENTANA_MENU_PRINCIPAL
+
+        self.renderizar_partida_terminada()
 
         return retorno
 

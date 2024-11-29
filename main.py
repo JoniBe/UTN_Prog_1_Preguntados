@@ -37,9 +37,9 @@ while corriendo:
     if ventana_actual == VENTANA_MENU_PRINCIPAL:
         ventana_actual = menu_principal.ejecutar(ventana, cola_eventos)
     elif ventana_actual == VENTANA_JUGAR:
-        ventana_actual = partida.ejecutar(cola_eventos)
+        ventana_actual = partida.jugar(cola_eventos)
     elif ventana_actual == VENTANA_FIN_PARTIDA:
-        ventana_actual = terminar_juego(ventana, cola_eventos, datos_juego)
+        ventana_actual = partida.terminar(cola_eventos)
     elif ventana_actual == VENTANA_SALIR:
         corriendo = False
 

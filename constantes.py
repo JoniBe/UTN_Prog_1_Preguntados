@@ -12,7 +12,7 @@ VENTANA_CENTRO_HEIGHT = VENTANA_HEIGHT // 2
 
 # JUEGO
 TIEMPO_INICIAL = 60
-CANTIDAD_VIDAS = 5
+CANTIDAD_VIDAS = 1
 PUNTUACION_ACIERTO = 100
 PUNTUACION_ERROR = 50
 MAX_ACIERTOS_SEGUIDOS = 3
@@ -29,16 +29,19 @@ MENU_CONTENEDOR_HIJO_PATH = "assets/menu_contenedor_hijo.png"
 MENU_CONTENEDOR_PATH = "assets/menu_contenedor.png"
 BACKGROUND_MENU_PRINCIPAL_PATH = "assets/background_menu_principal.jpg"
 BACKGROUND_PARTIDA_PATH = "assets/background_partida.jpg"
+BACKGROUND_PARTIDA_TERMINADA_PATH = "assets/background_partida_terminada.jpeg"
 CONTENEDOR_PREGUNTA_PATH = "assets/contenedor_pregunta.png"
 CONTENEDOR_TIEMPO_PATH = "assets/contenedor_redondo_gris.png"
 CONTENEDOR_VIDAS_PATH = "assets/contenedor_gris.png"
 CONTENEDOR_PUNTUACION_PATH = "assets/contenedor_gris.png"
 SONIDO_ACIERTO_PATH = "assets/sonido_acierto.mp3"
 SONIDO_ERROR_PATH = "assets/sonido_error.mp3"
+CAMPO_USUARIO_PATH = "assets/campo_usuario.png"
 
 # PYGAME - IMAGENES
 BACKGROUND_MENU_PRINCIPAL = pygame.image.load(BACKGROUND_MENU_PRINCIPAL_PATH)
 BACKGROUND_PARTIDA = pygame.image.load(BACKGROUND_PARTIDA_PATH)
+BACKGROUND_PARTIDA_TERMINADA = pygame.image.load(BACKGROUND_PARTIDA_TERMINADA_PATH)
 BOTON_VERDE = pygame.image.load(BOTON_VERDE_PATH)
 BOTON_AZUL = pygame.image.load(BOTON_AZUL_PATH)
 MENU_CONTENEDOR_PADRE = pygame.image.load(MENU_CONTENEDOR_PADRE_PATH)
@@ -48,6 +51,7 @@ CONTENEDOR_PREGUNTA = pygame.image.load(CONTENEDOR_PREGUNTA_PATH)
 CONTENEDOR_TIEMPO = pygame.image.load(CONTENEDOR_TIEMPO_PATH)
 CONTENEDOR_VIDAS = pygame.image.load(CONTENEDOR_VIDAS_PATH)
 CONTENEDOR_PUNTUACION = pygame.image.load(CONTENEDOR_PUNTUACION_PATH)
+CAMPO_USUARIO = pygame.image.load(CAMPO_USUARIO_PATH)
 
 # PYGAME - SONIDOS
 SONIDO_ACIERTO = pygame.mixer.Sound(SONIDO_ACIERTO_PATH)
