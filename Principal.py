@@ -19,7 +19,7 @@ corriendo = True
 
 ventana_actual = "Menu"
 
-datos_juego = {"puntuacion":0,"vidas":CANTIDAD_VIDAS,"usuario":"","acertados_seguidos": 1,"tiempo" : 0}
+datos_juego = {"puntuacion":0,"vidas":CANTIDAD_VIDAS,"usuario":"","acertados_seguidos": 1,"tiempo" : 0,"bomba": 3,"x2": 3,"doble_chance": 3,"pasar": 3}
 
 
 while corriendo:
