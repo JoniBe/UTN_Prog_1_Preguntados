@@ -1,7 +1,7 @@
 import pygame
 from modelos.boton import Boton
 from modelos.coordenada import Coordenada
-from constantes import MENU_CONTENEDOR_PATH, VENTANA_MENU_PRINCIPAL, VENTANA_SALIR, FUENTE_30, MENU_PRINCIPAL_TITULO, MENU_PRINCIPAL_TITULO_COLOR, MENU_PRINCIPAL_TITULO_COLOR_SOMBRA
+from Constantes import MENU_CONTENEDOR_PATH, VENTANA_MENU_PRINCIPAL, VENTANA_SALIR, VENTANA_JUGAR, FUENTE_30, MENU_PRINCIPAL_TITULO, MENU_PRINCIPAL_TITULO_COLOR, MENU_PRINCIPAL_TITULO_COLOR_SOMBRA
 from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical
 
 # Menu Principal
@@ -88,4 +88,6 @@ class MenuPrincipal:
             if boton_rect.collidepoint(evento.pos):
                 if boton.label == "Salir":
                     return VENTANA_SALIR
+                elif boton.label == "Jugar":
+                    return VENTANA_JUGAR
         return VENTANA_MENU_PRINCIPAL
