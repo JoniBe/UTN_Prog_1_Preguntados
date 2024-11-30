@@ -117,16 +117,14 @@ def activar_campo(campo,bandera):
         retorno = True
     return retorno
 
-def generar_json(nombre_archivo:str,lista:list,nombre) -> bool: 
+def generar_json(nombre_archivo:str, lista:list, nombre:str) -> bool: 
     if len(nombre) > 0:
-
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
             contenido = json.load(archivo)
         contenido.extend(lista)    
     
         with open(nombre_archivo,'w') as archivo:
             json.dump(contenido, archivo, indent=4)
-
 
 def obtener_fecha():
     # Obtener la hora actual en formato timestamp (segundos desde la época)
@@ -148,17 +146,17 @@ def restablecer_variables(juego):
 def reproducir_sonido(sonido):
     sonido.play()
 
-def mostrar_pregunta_en_contenedor(contenedor: pygame.Surface, pregunta: str):
+def mostrar_texto_en_contenedor(contenedor: pygame.Surface, texto: str, fuente: pygame.font.Font = FUENTE_20):
     # Dividir el texto en palabras
-    palabras = pregunta.split()
+    palabras = texto.split()
     lineas = []
     linea_actual = []
-    ancho_contenedor = contenedor.get_width() - 80  # Margen de 40px a cada lado
+    ancho_contenedor = contenedor.get_width() - 80
         
     # Crear líneas que se ajusten al ancho
     for palabra in palabras:
         linea_prueba = ' '.join(linea_actual + [palabra])
-        ancho_texto = FUENTE_20.size(linea_prueba)[0]
+        ancho_texto = fuente.size(linea_prueba)[0]
 
         if ancho_texto <= ancho_contenedor:
             linea_actual.append(palabra)
@@ -170,7 +168,7 @@ def mostrar_pregunta_en_contenedor(contenedor: pygame.Surface, pregunta: str):
         lineas.append(' '.join(linea_actual))
         
     # Calcular altura total del texto
-    altura_linea = FUENTE_20.get_height()
+    altura_linea = fuente.get_height()
     altura_total = len(lineas) * altura_linea
     
     # Posición inicial Y centrada
@@ -178,7 +176,7 @@ def mostrar_pregunta_en_contenedor(contenedor: pygame.Surface, pregunta: str):
     
     # Renderizar cada línea centrada
     for i, linea in enumerate(lineas):
-        superficie_texto = FUENTE_20.render(linea, True, COLOR_AZUL)
+        superficie_texto = fuente.render(linea, True, COLOR_AZUL)
         x_centrado = (contenedor.get_width() - superficie_texto.get_width()) // 2
         y_pos = y_inicial + (i * altura_linea)
         contenedor.blit(superficie_texto, (x_centrado, y_pos))
