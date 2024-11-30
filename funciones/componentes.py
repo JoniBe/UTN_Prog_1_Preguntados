@@ -1,7 +1,6 @@
 import pygame
 from modelos.boton import Boton
 from modelos.coordenada import Coordenada
-from modelos.menu_principal import MenuPrincipal
 
 # Botones
 def crear_lista_botones(ventana: pygame.Surface) -> list[Boton]:
