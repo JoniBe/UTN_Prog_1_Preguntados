@@ -1,18 +1,18 @@
 import pygame
 from modelos.coordenada import Coordenada
-from Constantes import BOTON_VERDE, FUENTE_PATH, BOTON_AZUL
+from Constantes import BOTON_VERDE, FUENTE_PATH, BOTON_AZUL, BOTON_ESCALADO_ANCHO, BOTON_ESCALADO_ALTO
 from funciones.auxiliares import calcular_centro_horizontal
+
 # Boton
 class Boton:
     def __init__(self, label: str, posicion: Coordenada, tipo: str = "MENU"):
         self.imagen = BOTON_VERDE if tipo == "MENU" else BOTON_AZUL
-        self.imagen = pygame.transform.scale(self.imagen, (self.imagen.get_width() // 2, self.imagen.get_height() // 2))
-        self.label = label
-        posicion.x = posicion.x - self.imagen.get_width() // 2
-        self.posicion = posicion
-        self.agregar_label()
+        self.imagen = pygame.transform.scale(self.imagen, (BOTON_ESCALADO_ANCHO, BOTON_ESCALADO_ALTO))
         self.imagen_original = self.imagen.copy()
+        self.label = label
+        self.posicion = posicion
         self.rectangulo = None
+        self.agregar_label()
 
     def agregar_label(self):
         max_width, max_height = self.imagen.get_size()
