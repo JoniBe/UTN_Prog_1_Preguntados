@@ -4,7 +4,7 @@ from modelos.partida import Partida
 from modelos.partida_finalizada import PartidaFinalizada
 from modelos.menu_principal import MenuPrincipal
 from modelos.ranking import Ranking
-from Constantes import *
+from constantes import *
 
 # Juego
 class Juego:

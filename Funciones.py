@@ -1,6 +1,6 @@
 import random
 import pygame
-from Constantes import *
+from constantes import *
 import json
 import time
 from modelos.pregunta import Pregunta

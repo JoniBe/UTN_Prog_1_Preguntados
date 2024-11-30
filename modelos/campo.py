@@ -1,6 +1,6 @@
 import pygame
 from modelos.coordenada import Coordenada
-from Constantes import *
+from constantes import *
 from funciones.auxiliares import calcular_centro_horizontal
 from Funciones import mostrar_texto_en_contenedor
 

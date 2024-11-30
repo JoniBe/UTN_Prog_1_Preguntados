@@ -1,6 +1,6 @@
 import pygame
 from modelos.coordenada import Coordenada
-from Constantes import BOTON_VERDE, FUENTE_PATH, BOTON_AZUL, BOTON_ESCALADO_ANCHO, BOTON_ESCALADO_ALTO
+from constantes import BOTON_VERDE, FUENTE_PATH, BOTON_AZUL, BOTON_ESCALADO_ANCHO, BOTON_ESCALADO_ALTO
 from funciones.auxiliares import calcular_centro_horizontal
 
 # Boton

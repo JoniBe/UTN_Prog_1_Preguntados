@@ -1,7 +1,7 @@
 import pygame
 from modelos.coordenada import Coordenada
 from modelos.boton import Boton
-from Constantes import *
+from constantes import *
 from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical
 
 # Menu Principal

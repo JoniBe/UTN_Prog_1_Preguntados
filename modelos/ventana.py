@@ -1,5 +1,5 @@
 import pygame
-from Constantes import VENTANA_MEDIDA
+from constantes import VENTANA_MEDIDA
 
 # Ventana
 class Ventana:

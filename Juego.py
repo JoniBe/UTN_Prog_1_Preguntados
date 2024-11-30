@@ -1,7 +1,7 @@
 import pygame
 import pygame.locals
 from Funciones import *
-from Constantes import *
+from constantes import *
 
 pygame.init()
 

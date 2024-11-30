@@ -2,7 +2,7 @@ import pygame
 import random
 from modelos.coordenada import Coordenada
 from modelos.boton import Boton
-from Constantes import *
+from constantes import *
 from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical
 from funciones.manejo_archivos import leer_csv_preguntas
 from Funciones import mostrar_texto_en_contenedor, reproducir_sonido
@@ -42,7 +42,7 @@ class Partida:
         self.botones_respuestas = []
         pregunta_actual = self.preguntas[self.indice_pregunta]
         posicion_y_inicial = 380
-        
+
         for opcion in pregunta_actual.opciones:
             boton = Boton(opcion, Coordenada(VENTANA_CENTRO_WIDTH, posicion_y_inicial), "JUEGO")
             self.botones_respuestas.append(boton)

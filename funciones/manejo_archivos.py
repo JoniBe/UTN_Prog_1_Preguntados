@@ -2,7 +2,7 @@ import os
 import json
 from modelos.pregunta import Pregunta
 from modelos.puntaje import Puntaje
-from Constantes import PREGUNTAS_CSV_PATH, RANKING_JSON_PATH
+from constantes import PREGUNTAS_CSV_PATH, RANKING_JSON_PATH
 
 def leer_csv_preguntas() -> list[Pregunta]:
     lista_preguntas = []

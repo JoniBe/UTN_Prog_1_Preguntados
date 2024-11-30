@@ -1,5 +1,5 @@
 import pygame
-from Constantes import *
+from constantes import *
 from modelos.boton import Boton
 from modelos.coordenada import Coordenada
 from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical

@@ -1,5 +1,5 @@
 import pygame
-from Constantes import *
+from constantes import *
 from modelos.campo import Campo
 from modelos.boton import Boton
 from modelos.coordenada import Coordenada
