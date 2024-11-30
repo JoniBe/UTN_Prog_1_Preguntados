@@ -14,8 +14,14 @@ class PartidaFinalizada:
         self.ventana_actual = VENTANA_PARTIDA_FINALIZADA
         self.partida_actual = None
         self.usuario = ''
-        self.boton_aceptar = Boton('ACEPTAR', Coordenada(VENTANA_CENTRO_WIDTH, 500), "JUEGO")
+        self.boton_aceptar = None
         self.campo_usuario_activo = False
+        self.crear_boton_aceptar()
+
+    def crear_boton_aceptar(self):
+        self.boton_aceptar = Boton('ACEPTAR', Coordenada(VENTANA_CENTRO_WIDTH, 500), "JUEGO")
+        posicion_x = calcular_centro_horizontal(self.ventana, self.boton_aceptar.imagen)
+        self.boton_aceptar.posicion.x = posicion_x
 
     def renderizar_fondo(self):
         fondo_juego = pygame.transform.scale(BACKGROUND_PARTIDA_TERMINADA, VENTANA_MEDIDA)

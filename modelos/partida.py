@@ -44,7 +44,9 @@ class Partida:
         posicion_y_inicial = 380
 
         for opcion in pregunta_actual.opciones:
-            boton = Boton(opcion, Coordenada(VENTANA_CENTRO_WIDTH, posicion_y_inicial), "JUEGO")
+            boton = Boton(opcion, Coordenada(VENTANA_CENTRO_WIDTH, posicion_y_inicial), BOTON_TIPO_RESPUESTA)
+            posicion_x = calcular_centro_horizontal(self.ventana, boton.imagen)
+            boton.posicion.x = posicion_x
             self.botones_respuestas.append(boton)
             posicion_y_inicial += 80
 
