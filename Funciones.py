@@ -80,7 +80,7 @@ def mostrar_texto(surface, text, pos, font, color=pygame.Color('black'), line_sp
         surface.blit(word_surface, (x + sum(font.size(w)[0] + space_width for w in current_line[:i]), y))
 
 
-def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_error,sonido_acierto,posicion_btn, bandera_x2):
+def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_error,sonido_acierto,posicion_btn, bandera_x2,comodin_chance_bandera,botones_lista_touch,desaparecer_btn):
 
     posicion_btn["btn_respuesta1"] = False
     posicion_btn["btn_respuesta2"] = False
@@ -88,6 +88,7 @@ def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_er
     posicion_btn["btn_respuesta4"] = False
 
     if lista_preguntas[0]["correcta"] == str(btn):
+        
         if bandera_x2 == True:
             reproducir_sonido(sonido_acierto)
             print(f"Correcto{juego["acertados_seguidos"]}")
@@ -112,21 +113,14 @@ def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_er
 
             if juego["acertados_seguidos"] > 4:
                 juego["acertados_seguidos"] = 0
-        #con esto se que boon estoy tocando para hacerlo desaparecer
+
         
 
         sortear_lista(lista_preguntas)
     else:
-        reproducir_sonido(sonido_error)
-        juego["puntuacion"] += PUNTUACION_ERROR
-        juego["vidas"] -= 1
-        juego["acertados_seguidos"] = 0
-        sortear_lista(lista_preguntas)
-    return cantidad_segundos
-
-def comodin_doble_chance(comodin_chance_bandera,lista_preguntas,botones_lista_touch, desaparecer_btn,btn):
-    if comodin_chance_bandera == True:                          
-        if lista_preguntas[0]["correcta"] != str(btn):
+        #comprueba bandera para saber si activar comodin chance o no
+        if comodin_chance_bandera == True:                          
+            #con esto se que boon estoy tocando para hacerlo desaparecer
             if botones_lista_touch["btn1"] == True:
                 desaparecer_btn["btn_respuesta1"] = True
             elif botones_lista_touch["btn2"] == True:
@@ -134,7 +128,15 @@ def comodin_doble_chance(comodin_chance_bandera,lista_preguntas,botones_lista_to
             elif botones_lista_touch["btn3"] == True:
                 desaparecer_btn["btn_respuesta3"] = True
             elif botones_lista_touch["btn4"] == True:
-                desaparecer_btn["btn_respuesta4"] = True    
+                desaparecer_btn["btn_respuesta4"] = True
+        else:
+            reproducir_sonido(sonido_error)
+            juego["puntuacion"] += PUNTUACION_ERROR
+            juego["vidas"] -= 1
+            juego["acertados_seguidos"] = 0
+            sortear_lista(lista_preguntas)
+    return cantidad_segundos
+
 
 def mostrar_respuestas(pantalla,lista_preguntas, botones, mi_fuente):
 
