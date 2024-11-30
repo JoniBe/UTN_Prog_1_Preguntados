@@ -1,11 +1,11 @@
 import pygame
-from Constantes import *
+from constantes import *
 from Funciones import *
 
 
 fondo_fin = pygame.image.load("assets/fondo_din.jpeg")
 
-fondo_fin_resize = pygame.transform.scale(fondo_fin, VENTANA)
+fondo_fin_resize = pygame.transform.scale(fondo_fin, VENTANA_MEDIDA)
 
 campo_nombre = pygame.image.load("assets/boton_pregunta.png")
 
@@ -22,11 +22,11 @@ bandera_camnpo1 = False
 def terminar_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event],juego)-> str:
     global bandera_camnpo1
     global nombre
-    retorno = "fin_partida"
+    retorno = VENTANA_FIN_PARTIDA
     #print(lista_preguntas[0])
     for evento in cola_eventos:
         if evento.type == pygame.QUIT:
-            retorno = "Salir"
+            retorno = VENTANA_SALIR
         if evento.type == pygame.MOUSEBUTTONDOWN:
             bandera_camnpo1 = activar_campo(campo, bandera_camnpo1)
 
@@ -61,7 +61,7 @@ def terminar_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event]
                 restablecer_variables(juego)
 
                 nombre = ""
-                retorno = "Menu"
+                retorno = VENTANA_MENU_PRINCIPAL
             
         
 
@@ -69,8 +69,8 @@ def terminar_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event]
     texto_renderizado = fuente.render(nombre, True, COLOR_ROJO)
     aceptar_renderizado = fuente.render("Aceptar", True, COLOR_ROJO)        
 
-    posicionar_botones(centro_pantalla_ancho,centro_pantalla_alto, campo[0]["rectangulo"])
-    posicionar_botones(centro_pantalla_ancho,centro_pantalla_alto+100, aceptar[0]["rectangulo"])
+    posicionar_botones(VENTANA_CENTRO_WIDTH, VENTANA_CENTRO_HEIGHT, campo[0]["rectangulo"])
+    posicionar_botones(VENTANA_CENTRO_WIDTH, VENTANA_CENTRO_HEIGHT + 100, aceptar[0]["rectangulo"])
 
     
 

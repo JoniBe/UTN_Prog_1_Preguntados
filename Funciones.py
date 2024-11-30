@@ -1,9 +1,9 @@
 import random
 import pygame
-from Constantes import *
+from constantes import *
 import json
 import time
-import random
+from modelos.pregunta import Pregunta
 
 def leer_csv(archivo:str)-> list:
 
@@ -18,7 +18,6 @@ def leer_csv(archivo:str)-> list:
     return lista
 
 def sortear_lista(lista:list) -> list:
-
     lista_sorteada = random.shuffle(lista)
     return lista_sorteada
 
@@ -153,16 +152,14 @@ def activar_campo(campo,bandera):
         retorno = True
     return retorno
 
-def generar_json(nombre_archivo:str,lista:list,nombre) -> bool: 
+def generar_json(nombre_archivo:str, lista:list, nombre:str) -> bool: 
     if len(nombre) > 0:
-
         with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
             contenido = json.load(archivo)
         contenido.extend(lista)    
     
         with open(nombre_archivo,'w') as archivo:
             json.dump(contenido, archivo, indent=4)
-
 
 def obtener_fecha():
     # Obtener la hora actual en formato timestamp (segundos desde la época)
@@ -172,7 +169,7 @@ def obtener_fecha():
     tiempo_local = time.localtime(timestamp)
     
     # Convertir la estructura de tiempo local a una cadena de texto en formato legible
-    fecha_legible = time.strftime("%Y-%m-%d %H:%M:%S", tiempo_local)
+    fecha_legible = time.strftime("%d/%m/%Y", tiempo_local)
     
     return fecha_legible
 
@@ -182,7 +179,6 @@ def restablecer_variables(juego):
     juego["acertados_seguidos"] = 1
 
 def reproducir_sonido(sonido):
-
     sonido.play()
 
 def controlar_comodin_bomba(bomba_sound, lista_preguntas, desaparecer_btn, juego, bomba_explotada):
@@ -215,3 +211,38 @@ def controlar_comodin_bomba(bomba_sound, lista_preguntas, desaparecer_btn, juego
 
     juego["bomba"] -= 1
     return bomba_explotada
+
+def mostrar_texto_en_contenedor(contenedor: pygame.Surface, texto: str, fuente: pygame.font.Font = FUENTE_20):
+    # Dividir el texto en palabras
+    palabras = texto.split()
+    lineas = []
+    linea_actual = []
+    ancho_contenedor = contenedor.get_width() - 80
+        
+    # Crear líneas que se ajusten al ancho
+    for palabra in palabras:
+        linea_prueba = ' '.join(linea_actual + [palabra])
+        ancho_texto = fuente.size(linea_prueba)[0]
+
+        if ancho_texto <= ancho_contenedor:
+            linea_actual.append(palabra)
+        else:
+            lineas.append(' '.join(linea_actual))
+            linea_actual = [palabra]
+        
+    if linea_actual:
+        lineas.append(' '.join(linea_actual))
+        
+    # Calcular altura total del texto
+    altura_linea = fuente.get_height()
+    altura_total = len(lineas) * altura_linea
+    
+    # Posición inicial Y centrada
+    y_inicial = (contenedor.get_height() - altura_total) // 2
+    
+    # Renderizar cada línea centrada
+    for i in range(len(lineas)):
+        superficie_texto = fuente.render(lineas[i], True, COLOR_AZUL)
+        x_centrado = (contenedor.get_width() - superficie_texto.get_width()) // 2
+        y_pos = y_inicial + (i * altura_linea)
+        contenedor.blit(superficie_texto, (x_centrado, y_pos))
