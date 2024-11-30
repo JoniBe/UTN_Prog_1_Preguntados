@@ -1,34 +1,49 @@
 import pygame
-from modelos.boton import Boton
 from modelos.coordenada import Coordenada
-from Constantes import MENU_CONTENEDOR_PATH, VENTANA_MENU_PRINCIPAL, VENTANA_SALIR, VENTANA_JUGAR, FUENTE_30, MENU_PRINCIPAL_TITULO, MENU_PRINCIPAL_TITULO_COLOR, MENU_PRINCIPAL_TITULO_COLOR_SOMBRA
+from modelos.boton import Boton
+from Constantes import *
 from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical
 
 # Menu Principal
 class MenuPrincipal:
-    def __init__(self, botones: list[Boton]):
+    def __init__(self, ventana: pygame.Surface):
+        self.ventana = ventana
+        self.ventana_actual = VENTANA_MENU_PRINCIPAL
         self.menu_contenedor = pygame.image.load(MENU_CONTENEDOR_PATH)
-        self.botones = botones
+        self.botones = []
         self.posicion = Coordenada(0, 0)
+        self.crear_botones()
 
-    def renderizar(self, ventana: pygame.Surface):
+    def crear_botones(self):
+        self.botones.append(Boton('Jugar', Coordenada(VENTANA_CENTRO_WIDTH, 100)))
+        self.botones.append(Boton('Configuracion', Coordenada(VENTANA_CENTRO_WIDTH, 200)))
+        self.botones.append(Boton('Salir', Coordenada(VENTANA_CENTRO_WIDTH, 300)))
+
+    def renderizar(self):
+        # Renderizar background
+        self.renderizar_background()
+
         # Escalar menu
         self.menu_contenedor = pygame.transform.scale(self.menu_contenedor, (500, 500))
         
         # Agregar titulo
-        self.agregar_titulo()
+        self.renderizar_titulo()
 
         # Agregar botones
         self.renderizar_botones()
 
         # Posicionar menu
-        self.posicion.x = calcular_centro_horizontal(ventana, self.menu_contenedor)
-        self.posicion.y = calcular_centro_vertical(ventana, self.menu_contenedor)
+        self.posicion.x = calcular_centro_horizontal(self.ventana, self.menu_contenedor)
+        self.posicion.y = calcular_centro_vertical(self.ventana, self.menu_contenedor)
         
         # Renderizar menu
-        ventana.blit(self.menu_contenedor, (self.posicion.x, self.posicion.y))
+        self.ventana.blit(self.menu_contenedor, (self.posicion.x, self.posicion.y))
 
-    def agregar_titulo(self):
+    def renderizar_background(self):
+        background = pygame.transform.scale(BACKGROUND_MENU_PRINCIPAL, VENTANA_MEDIDA)
+        self.ventana.blit(background, (0, 0))
+
+    def renderizar_titulo(self):
         text = FUENTE_30.render(MENU_PRINCIPAL_TITULO, True, MENU_PRINCIPAL_TITULO_COLOR)
         text_sombra = FUENTE_30.render(MENU_PRINCIPAL_TITULO, True, MENU_PRINCIPAL_TITULO_COLOR_SOMBRA)
         self.menu_contenedor.blit(text_sombra, (calcular_centro_horizontal(self.menu_contenedor, text) + 2, 82))
@@ -40,20 +55,20 @@ class MenuPrincipal:
             posicion_y = boton.posicion.y + 50
             boton.rectangulo = self.menu_contenedor.blit(boton.imagen, (posicion_x, posicion_y))
 
-    def ejecutar(self, ventana: pygame.Surface, cola_eventos: list[pygame.event.Event]) -> str:
-        retorno = VENTANA_MENU_PRINCIPAL
+    def ejecutar(self, cola_eventos: list[pygame.event.Event], ventana_actual: str) -> str:
+        self.ventana_actual = ventana_actual
 
         for evento in cola_eventos:
             if evento.type == pygame.QUIT:
-                retorno = VENTANA_SALIR
+                self.ventana_actual = VENTANA_SALIR
             elif evento.type == pygame.MOUSEMOTION:
                 self.manejar_hover_de_botones(evento)
             elif evento.type == pygame.MOUSEBUTTONDOWN:
-                retorno = self.manejar_evento_click(evento)
+                self.ventana_actual = self.manejar_evento_click(evento)
 
-        self.renderizar(ventana)
+        self.renderizar()
 
-        return retorno
+        return self.ventana_actual
 
         # for evento in cola_eventos:
         #     if evento.type == pygame.QUIT:
