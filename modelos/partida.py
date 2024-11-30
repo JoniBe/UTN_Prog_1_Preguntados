@@ -5,7 +5,7 @@ from modelos.boton import Boton
 from Constantes import *
 from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical
 from funciones.manejo_archivos import leer_csv_preguntas
-from Funciones import mostrar_pregunta_en_contenedor, reproducir_sonido
+from Funciones import mostrar_texto_en_contenedor, reproducir_sonido
 
 pygame.init()
 pygame.mixer.init()
@@ -18,13 +18,17 @@ class Partida:
         self.puntuacion = 0
         self.vidas = CANTIDAD_VIDAS
         self.usuario = ""
-        self.acertados_seguidos = 1
+        self.acertados_seguidos = 0
         self.tiempo = TIEMPO_INICIAL
         self.preguntas = []
-        self.botones = []
+        self.campo_usuario = None
+        self.campo_usuario_activo = False
+        self.boton_aceptar = None
         self.posicion = Coordenada(0,0)
         self.evento_tiempo_1s = pygame.USEREVENT
+        self.indice_pregunta = 0
         self.cargar_preguntas()
+        self.botones_respuestas: list[Boton] = []
         pygame.time.set_timer(self.evento_tiempo_1s, 1000)
     
     def cargar_preguntas(self):
@@ -34,21 +38,21 @@ class Partida:
     def sortear_lista_preguntas(self):
         random.shuffle(self.preguntas)
 
-    def renderizar_botones(self):
-        pregunta_actual = self.preguntas[0]
-
+    def renderizar_respuestas(self):
+        self.botones_respuestas = []
+        pregunta_actual = self.preguntas[self.indice_pregunta]
         posicion_y_inicial = 380
-        self.botones = []
         for opcion in pregunta_actual.opciones:
-            self.botones.append(Boton(opcion, Coordenada(VENTANA_CENTRO_WIDTH, posicion_y_inicial), "JUEGO"))
+            boton = Boton(opcion, Coordenada(VENTANA_CENTRO_WIDTH, posicion_y_inicial), "JUEGO")
+            self.botones_respuestas.append(boton)
             posicion_y_inicial += 80
 
-        for boton in self.botones:
+        for boton in self.botones_respuestas:
             boton.rectangulo = self.ventana.blit(boton.imagen, (boton.posicion.x, boton.posicion.y))
 
     def renderizar_pregunta(self):
         contenedor_pregunta = CONTENEDOR_PREGUNTA.copy()
-        mostrar_pregunta_en_contenedor(contenedor_pregunta, self.preguntas[0].pregunta)
+        mostrar_texto_en_contenedor(contenedor_pregunta, self.preguntas[self.indice_pregunta].pregunta)
         self.ventana.blit(contenedor_pregunta, (100, 140))
 
     def renderizar_tiempo(self):
@@ -78,19 +82,19 @@ class Partida:
         contenedor_puntuacion.blit(puntuacion, (posicion_x, posicion_y))
         self.ventana.blit(contenedor_puntuacion, (calcular_centro_horizontal(self.ventana, contenedor_puntuacion), 10))
 
-    def renderizar_fondo(self, fondo: pygame.Surface):
-        fondo_juego = pygame.transform.scale(fondo, VENTANA_MEDIDA)
+    def renderizar_fondo(self):
+        fondo_juego = pygame.transform.scale(BACKGROUND_PARTIDA, VENTANA_MEDIDA)
         self.ventana.blit(fondo_juego, (0,0))
         
-    def renderizar_partida_a_jugar(self):
+    def renderizar(self):
         # Renderizar fondo
-        self.renderizar_fondo(BACKGROUND_PARTIDA)
-
-        # Agregar botones
-        self.renderizar_botones()
+        self.renderizar_fondo()
 
         # Mostrar pregunta
         self.renderizar_pregunta()
+
+        # Agregar botones
+        self.renderizar_respuestas()
 
         # Renderizar tiempo
         self.renderizar_tiempo()
@@ -106,130 +110,72 @@ class Partida:
         self.posicion.y = calcular_centro_vertical(self.ventana, self.ventana)        
         self.ventana.blit(self.ventana, (self.posicion.x, self.posicion.y))
 
-    def jugar(self, cola_eventos: list[pygame.event.Event]) -> str:
-        retorno = self.ventana_actual
+    def jugar(self, cola_eventos: list[pygame.event.Event], ventana_actual: str) -> str:
+        self.ventana_actual = ventana_actual
 
-        if self.vidas == 0:
-            self.ventana_actual = VENTANA_FIN_PARTIDA
+        if self.vidas == 0 or self.tiempo <= 0:
+            self.ventana_actual = VENTANA_PARTIDA_FINALIZADA
         else:
-            self.ventana_actual = VENTANA_JUGAR
-        
+            self.ventana_actual = VENTANA_JUGAR 
+
         for evento in cola_eventos:
             if evento.type == pygame.QUIT:
-                retorno = VENTANA_SALIR
-            if evento.type == self.evento_tiempo_1s:
+                self.ventana_actual = VENTANA_SALIR
+            elif evento.type == self.evento_tiempo_1s:
                 self.tiempo -= 1
-                if self.tiempo <= 0:
-                    retorno = VENTANA_FIN_PARTIDA
-            if evento.type == pygame.MOUSEBUTTONDOWN:
+            elif evento.type == pygame.MOUSEMOTION:
+                self.manejar_hover_de_botones(evento)
+            elif evento.type == pygame.MOUSEBUTTONDOWN:
                 self.manejar_evento_click(evento)
 
-        self.renderizar_partida_a_jugar()
+        self.renderizar()
 
-        return retorno
+        return self.ventana_actual
     
-    def renderizar_campo(self):
-        campo = CAMPO_USUARIO.copy()
-        campo = pygame.transform.scale(campo, (400, 64))
-        posicion_x = VENTANA_CENTRO_WIDTH - campo.get_width() // 2
-        posicion_y = 400
-        self.ventana.blit(campo, (posicion_x, posicion_y))
-    
-    def renderizar_boton_aceptar(self):
-        boton_aceptar = Boton('ACEPTAR', Coordenada(VENTANA_CENTRO_WIDTH, (0, 0)), "JUEGO")
-        pass
-    
-    def renderizar_partida_terminada(self):
-        # Renderizar fondo
-        self.renderizar_fondo(BACKGROUND_PARTIDA_TERMINADA)
+    def manejar_hover_de_botones(self, evento: pygame.event.Event) -> bool:
+        mouse_rect = pygame.Rect(evento.pos, [1,1])
 
-        # Renderizar puntuacion
-        self.renderizar_puntuacion()
-
-        # Renderizar campo
-        self.renderizar_campo()
-
-        # Renderizar boton Aceptar
-        self.renderizar_boton_aceptar()
-
-        # Renderizar texto
-
-        # texto_renderizado = FUENTE_20.render(self.usuario, True, COLOR_ROJO)
-        # aceptar_renderizado = FUENTE_20.render("Aceptar", True, COLOR_ROJO)        
-
-        # posicionar_botones(VENTANA_CENTRO_WIDTH, VENTANA_CENTRO_HEIGHT, campo[0]["rectangulo"])
-        # posicionar_botones(VENTANA_CENTRO_WIDTH, VENTANA_CENTRO_HEIGHT + 100, aceptar[0]["rectangulo"])
-
-        # self.ventana.blit(fondo_fin_resize,(0,0))
-        # self.ventana.blit(campo[0]["superficie"],(campo[0]["rectangulo"].x, campo[0]["rectangulo"].y))
-        # self.ventana.blit(aceptar[0]["superficie"],(aceptar[0]["rectangulo"].x, aceptar[0]["rectangulo"].y))
-
-        # self.ventana.blit(texto_renderizado,(campo[0]["rectangulo"].centerx-170, campo[0]["rectangulo"].centery-20))
-        # self.ventana.blit(aceptar_renderizado,(aceptar[0]["rectangulo"].centerx-60, aceptar[0]["rectangulo"].centery-20))
-
-    def terminar(self, cola_eventos: list[pygame.event.Event]) -> str:
-        retorno = self.ventana_actual
-        
-        for evento in cola_eventos:
-            if evento.type == pygame.QUIT:
-                retorno = VENTANA_SALIR
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                pass
-                # bandera_camnpo1 = activar_campo(campo, bandera_camnpo1)
-            if evento.type == pygame.KEYDOWN:
-                letra_presionada = str(evento.unicode)
-                if evento.key == pygame.K_BACKSPACE:
-                    nombre = nombre[:-1]
-                elif letra_presionada and len(nombre) < 20 and not(evento.key == pygame.K_BACKSPACE):
-                    letra_presionada
-                    nombre += letra_presionada
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                # if aceptar[0]["rectangulo"].collidepoint(pos):
-                    
-                #     #guardamos datos en json
-                #     lista_puntuacion = []
-                #     informacion = {}
-                #     informacion["puntos"] = juego["puntuacion"]
-                #     informacion["fecha"] = obtener_fecha()
-                #     informacion["nombre"] = nombre
-                #     lista_puntuacion.append(informacion)
-                #     generar_json("puntos.json", lista_puntuacion, nombre)
-
-                #     #restablecemos las variables
-                #     restablecer_variables(juego)
-
-                #     nombre = ""
-                #     retorno = VENTANA_MENU_PRINCIPAL
-
-        self.renderizar_partida_terminada()
-
-        return retorno
+        for boton in self.botones_respuestas:
+            boton_rect = boton.rectangulo
+            if mouse_rect.colliderect(boton_rect):
+                boton.disparar_efecto_hover()
+            else:
+                boton.remover_efecto_hover()
 
     def manejar_evento_click(self, evento: pygame.event.Event):
-        for i in range(len(self.botones)):
-            if self.botones[i].rectangulo.collidepoint(evento.pos):
+        # Manejar click en botones de respuestas
+        for i in range(len(self.botones_respuestas)):
+            if self.botones_respuestas[i].rectangulo.collidepoint(evento.pos):
                 respuesta_seleccionada = i + 1
                 self.gestionar_puntuacion(respuesta_seleccionada)
-                self.sortear_lista_preguntas()
+                self.indice_pregunta += 1
+                if self.indice_pregunta >= len(self.preguntas):
+                    self.sortear_lista_preguntas()
+                    self.indice_pregunta = 0
                 break
 
     def gestionar_puntuacion(self, respuesta_seleccionada: int):
-        pregunta_actual = self.preguntas[0]
+        pregunta_actual = self.preguntas[self.indice_pregunta]
 
         if pregunta_actual.validar_respuesta(respuesta_seleccionada):
             reproducir_sonido(SONIDO_ACIERTO)
+
             self.puntuacion += PUNTUACION_ACIERTO
             self.acertados_seguidos += 1
 
             if self.acertados_seguidos == MAX_ACIERTOS_SEGUIDOS:
                 self.vidas += VIDA_EXTRA_POR_ACIERTOS_SEGUIDOS
                 self.tiempo += TIEMPO_EXTRA_POR_ACIERTOS_SEGUIDOS
-
-            if self.acertados_seguidos > 4:
                 self.acertados_seguidos = 0
         else:
             reproducir_sonido(SONIDO_ERROR)
             self.puntuacion -= PUNTUACION_ERROR
             self.vidas -= 1
             self.acertados_seguidos = 0
+    
+    def resetear_partida(self):
+        self.puntuacion = 0
+        self.vidas = CANTIDAD_VIDAS
+        self.usuario = ""
+        self.acertados_seguidos = 0
+        self.tiempo = TIEMPO_INICIAL
