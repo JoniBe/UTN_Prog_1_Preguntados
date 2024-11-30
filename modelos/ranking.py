@@ -11,7 +11,7 @@ class Ranking:
         self.ventana = ventana
         self.ventana_actual = VENTANA_RANKING
         self.contenedor = None
-        self.boton_volver = Boton('Volver', Coordenada(520, 720), 'RANKING')
+        self.boton_volver = Boton('Volver', Coordenada(0, 720), 'RANKING')
         self.headers = ["POSICION", "PUNTAJE", "NOMBRE", "FECHA"]
 
     def renderizar_background(self):
@@ -68,7 +68,8 @@ class Ranking:
         self.ventana.blit(text, (calcular_centro_horizontal(self.ventana, text), 40))
 
     def renderizar_boton_volver(self):
-        self.boton_volver.rectangulo = self.ventana.blit(self.boton_volver.imagen, (self.boton_volver.posicion.x, self.boton_volver.posicion.y))
+        posicion_x = calcular_centro_horizontal(self.ventana, self.boton_volver.imagen)
+        self.boton_volver.rectangulo = self.ventana.blit(self.boton_volver.imagen, (posicion_x, self.boton_volver.posicion.y))
     
     def renderizar(self):
         self.renderizar_background()
