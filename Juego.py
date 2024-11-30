@@ -65,20 +65,22 @@ pygame.time.set_timer(evento_tiempo_1s,1000)
 #banderas aparecer o desaparecer boton
 desaparecer_btn = {"btn_respuesta1": False, "btn_respuesta2": False,"btn_respuesta3": False,"btn_respuesta4": False}
 
+
 #banderas comodines
 bomba_explotada = False
 bandera_x2 = False
 comodin_pasar = False
+comodin_chance_bandera = False
 
-#guardar pregunta anterior
-contador_pregunta = 0
-pregunta_anterior = 0
+
 
 
 def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], juego)-> str:
     global bomba_explotada
     global bandera_x2
     global comodin_pasar
+    global comodin_chance_bandera
+    botones_lista_touch = {"btn1": False, "btn2": False,"btn3": False,"btn4": False}
 
     if juego["vidas"] < 1:
         pygame.mixer.music.stop()
@@ -101,12 +103,15 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], j
 
             #detectar colisiones y apartir de ahi evaluar que boon se presiona y tambien si la respeusta es correcta o incorrecta, tambien si se presiona un comodin
             if botones[0]["rectangulo"].collidepoint(pos):
+                
 
                 juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,1,juego["tiempo"],error, correcto, desaparecer_btn,bandera_x2)
                 bomba_explotada = False
                 bandera_x2 = False
                 comodin_pasar = False
-                pregunta_anterior = lista_preguntas[0]
+                comodin_chance_bandera = False
+                botones_lista_touch["btn1"] = True
+                comodin_doble_chance(comodin_chance_bandera,lista_preguntas,botones_lista_touch,desaparecer_btn,1)
 
             elif botones[1]["rectangulo"].collidepoint(pos):
                 
@@ -114,20 +119,32 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], j
                 bomba_explotada = False
                 bandera_x2 = False
                 comodin_pasar = False
-                
+                comodin_chance_bandera = False
+                botones_lista_touch["btn2"] = True
+                comodin_doble_chance(comodin_chance_bandera,lista_preguntas,botones_lista_touch,desaparecer_btn,2)
+
             elif botones[2]["rectangulo"].collidepoint(pos):
                 
                 juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,3,juego["tiempo"],error, correcto, desaparecer_btn,bandera_x2)
                 bomba_explotada = False
                 bandera_x2 = False
                 comodin_pasar = False
+                comodin_chance_bandera = False
+                botones_lista_touch["btn3"] = True
+                comodin_doble_chance(comodin_chance_bandera,lista_preguntas,botones_lista_touch,desaparecer_btn,3)
+
                 
             elif botones[3]["rectangulo"].collidepoint(pos):
                 juego["tiempo"] = gestionar_puntuacion(lista_preguntas,juego,4,juego["tiempo"],error, correcto, desaparecer_btn,bandera_x2)
                 bomba_explotada = False
                 bandera_x2 = False
                 comodin_pasar = False
+                comodin_chance_bandera = False
+                botones_lista_touch["btn4"] = True
+                comodin_doble_chance(comodin_chance_bandera,lista_preguntas,botones_lista_touch,desaparecer_btn,4)
 
+
+            
 
             #detectar comodines---------------------------------------
 
@@ -141,7 +158,9 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], j
                     juego["x2"] -= 1
 
             elif boton_chance[0]["rectangulo"].collidepoint(pos):
-                print("comodin chance")
+                if juego["pasar"] > 0 and comodin_chance_bandera == False:
+                    comodin_chance_bandera = True
+                    juego["doble_chance"] -= 1
 
             elif boton_pasar[0]["rectangulo"].collidepoint(pos):
                 
@@ -157,6 +176,7 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], j
     cantidad_bombas = mi_fuente.render(f"{juego["bomba"]}x",False,COLOR_ROJO)
     cantidad_x2 = mi_fuente.render(f"{juego["x2"]}x",False,COLOR_ROJO)
     cantidad_pasar = mi_fuente.render(f"{juego["pasar"]}x",False,COLOR_ROJO)
+    cantidad_chance = mi_fuente.render(f"{juego["doble_chance"]}x",False,COLOR_ROJO)
 
 
 
@@ -226,6 +246,7 @@ def abrir_juego(pantalla:pygame.Surface,cola_eventos:list[pygame.event.Event], j
     pantalla.blit(cantidad_bombas,(boton_bomba[0]["rectangulo"].x-50,boton_bomba[0]["rectangulo"].centery-15))
     pantalla.blit(cantidad_x2,(boton_x2[0]["rectangulo"].x-50,boton_x2[0]["rectangulo"].centery-15))
     pantalla.blit(cantidad_pasar,(boton_pasar[0]["rectangulo"].x-50,boton_pasar[0]["rectangulo"].centery-15))
+    pantalla.blit(cantidad_chance,(boton_chance[0]["rectangulo"].x-50,boton_chance[0]["rectangulo"].centery-15))
     
 
     

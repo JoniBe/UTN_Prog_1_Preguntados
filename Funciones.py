@@ -112,6 +112,9 @@ def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_er
 
             if juego["acertados_seguidos"] > 4:
                 juego["acertados_seguidos"] = 0
+        #con esto se que boon estoy tocando para hacerlo desaparecer
+        
+
         sortear_lista(lista_preguntas)
     else:
         reproducir_sonido(sonido_error)
@@ -120,6 +123,18 @@ def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_er
         juego["acertados_seguidos"] = 0
         sortear_lista(lista_preguntas)
     return cantidad_segundos
+
+def comodin_doble_chance(comodin_chance_bandera,lista_preguntas,botones_lista_touch, desaparecer_btn,btn):
+    if comodin_chance_bandera == True:                          
+        if lista_preguntas[0]["correcta"] != str(btn):
+            if botones_lista_touch["btn1"] == True:
+                desaparecer_btn["btn_respuesta1"] = True
+            elif botones_lista_touch["btn2"] == True:
+                desaparecer_btn["btn_respuesta2"] = True
+            elif botones_lista_touch["btn3"] == True:
+                desaparecer_btn["btn_respuesta3"] = True
+            elif botones_lista_touch["btn4"] == True:
+                desaparecer_btn["btn_respuesta4"] = True    
 
 def mostrar_respuestas(pantalla,lista_preguntas, botones, mi_fuente):
 
