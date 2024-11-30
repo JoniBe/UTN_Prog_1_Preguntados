@@ -1,6 +1,8 @@
-from modelos.pregunta import Pregunta
-from Constantes import PREGUNTAS_CSV_PATH
 import os
+import json
+from modelos.pregunta import Pregunta
+from modelos.puntaje import Puntaje
+from Constantes import PREGUNTAS_CSV_PATH, RANKING_JSON_PATH
 
 def leer_csv_preguntas() -> list[Pregunta]:
     lista_preguntas = []
@@ -16,3 +18,15 @@ def leer_csv_preguntas() -> list[Pregunta]:
         return False
     
     return lista_preguntas
+
+def leer_json_ranking() -> list[Puntaje]:
+    lista_ranking = []
+    if os.path.exists(RANKING_JSON_PATH):
+        with open(RANKING_JSON_PATH,"r") as archivo:
+            listado = json.load(archivo)
+            for puntaje in listado:
+                puntaje_aux = Puntaje(puntaje["puntos"], puntaje["fecha"], puntaje["nombre"])
+                lista_ranking.append(puntaje_aux)
+        return lista_ranking
+    else:
+        return []
