@@ -79,28 +79,63 @@ def mostrar_texto(surface, text, pos, font, color=pygame.Color('black'), line_sp
         surface.blit(word_surface, (x + sum(font.size(w)[0] + space_width for w in current_line[:i]), y))
 
 
-def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_error,sonido_acierto):
+def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_error,sonido_acierto,posicion_btn, bandera_x2,comodin_chance_bandera,botones_lista_touch,desaparecer_btn):
+
+    posicion_btn["btn_respuesta1"] = False
+    posicion_btn["btn_respuesta2"] = False
+    posicion_btn["btn_respuesta3"] = False
+    posicion_btn["btn_respuesta4"] = False
+
     if lista_preguntas[0]["correcta"] == str(btn):
-        reproducir_sonido(sonido_acierto)
-        print(f"Correcto{juego['acertados_seguidos']}")
-        juego["puntuacion"] += PUNTUACION_ACIERTO
-        juego["acertados_seguidos"] += 1
+        
+        if bandera_x2 == True:
+            reproducir_sonido(sonido_acierto)
+            print(f"Correcto{juego["acertados_seguidos"]}")
+            juego["puntuacion"] += PUNTUACION_ACIERTO * 2
+            juego["acertados_seguidos"] += 1
 
-        if juego["acertados_seguidos"] == 5:
-            juego["vidas"] += 1
-            cantidad_segundos += 20
+            if juego["acertados_seguidos"] == 5:
+                juego["vidas"] += 1
+                cantidad_segundos += 20
 
-        if juego["acertados_seguidos"] > 4:
-            juego["acertados_seguidos"] = 0
-            
+            if juego["acertados_seguidos"] > 4:
+                juego["acertados_seguidos"] = 0
+        else:
+            reproducir_sonido(sonido_acierto)
+            print(f"Correcto{juego["acertados_seguidos"]}")
+            juego["puntuacion"] += PUNTUACION_ACIERTO
+            juego["acertados_seguidos"] += 1
+
+            if juego["acertados_seguidos"] == 5:
+                juego["vidas"] += 1
+                cantidad_segundos += 20
+
+            if juego["acertados_seguidos"] > 4:
+                juego["acertados_seguidos"] = 0
+
+        
+
         sortear_lista(lista_preguntas)
     else:
-        reproducir_sonido(sonido_error)
-        juego["puntuacion"] += PUNTUACION_ERROR
-        juego["vidas"] -= 1
-        juego["acertados_seguidos"] = 0
-        sortear_lista(lista_preguntas)
+        #comprueba bandera para saber si activar comodin chance o no
+        if comodin_chance_bandera == True:                          
+            #con esto se que boon estoy tocando para hacerlo desaparecer
+            if botones_lista_touch["btn1"] == True:
+                desaparecer_btn["btn_respuesta1"] = True
+            elif botones_lista_touch["btn2"] == True:
+                desaparecer_btn["btn_respuesta2"] = True
+            elif botones_lista_touch["btn3"] == True:
+                desaparecer_btn["btn_respuesta3"] = True
+            elif botones_lista_touch["btn4"] == True:
+                desaparecer_btn["btn_respuesta4"] = True
+        else:
+            reproducir_sonido(sonido_error)
+            juego["puntuacion"] += PUNTUACION_ERROR
+            juego["vidas"] -= 1
+            juego["acertados_seguidos"] = 0
+            sortear_lista(lista_preguntas)
     return cantidad_segundos
+
 
 def mostrar_respuestas(pantalla,lista_preguntas, botones, mi_fuente):
 
@@ -145,6 +180,37 @@ def restablecer_variables(juego):
 
 def reproducir_sonido(sonido):
     sonido.play()
+
+def controlar_comodin_bomba(bomba_sound, lista_preguntas, desaparecer_btn, juego, bomba_explotada):
+
+    bomba_explotada = True 
+    bomba_sound.play()
+    respuesta = lista_preguntas[0]["correcta"]
+    print(respuesta)
+
+    botones_borrar = []
+
+    for i in range(4):
+        if not(i == int(respuesta)-1):
+            boton = i
+            botones_borrar.append(boton)
+                
+    botones_borrar.remove(random.choice(botones_borrar))
+
+    for i in range(len(botones_borrar)):
+                    
+
+        if botones_borrar[i] == 0:
+            desaparecer_btn["btn_respuesta1"] = True
+        elif botones_borrar[i] == 1:
+            desaparecer_btn["btn_respuesta2"] = True
+        elif botones_borrar[i] == 2:
+            desaparecer_btn["btn_respuesta3"] = True
+        elif botones_borrar[i] == 3:
+            desaparecer_btn["btn_respuesta4"] = True
+
+    juego["bomba"] -= 1
+    return bomba_explotada
 
 def mostrar_texto_en_contenedor(contenedor: pygame.Surface, texto: str, fuente: pygame.font.Font = FUENTE_20):
     # Dividir el texto en palabras
