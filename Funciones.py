@@ -134,7 +134,7 @@ def obtener_fecha():
     tiempo_local = time.localtime(timestamp)
     
     # Convertir la estructura de tiempo local a una cadena de texto en formato legible
-    fecha_legible = time.strftime("%Y-%m-%d %H:%M:%S", tiempo_local)
+    fecha_legible = time.strftime("%d/%m/%Y", tiempo_local)
     
     return fecha_legible
 
@@ -175,8 +175,8 @@ def mostrar_texto_en_contenedor(contenedor: pygame.Surface, texto: str, fuente: 
     y_inicial = (contenedor.get_height() - altura_total) // 2
     
     # Renderizar cada línea centrada
-    for i, linea in enumerate(lineas):
-        superficie_texto = fuente.render(linea, True, COLOR_AZUL)
+    for i in range(len(lineas)):
+        superficie_texto = fuente.render(lineas[i], True, COLOR_AZUL)
         x_centrado = (contenedor.get_width() - superficie_texto.get_width()) // 2
         y_pos = y_inicial + (i * altura_linea)
         contenedor.blit(superficie_texto, (x_centrado, y_pos))
