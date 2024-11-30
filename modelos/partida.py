@@ -42,6 +42,7 @@ class Partida:
         self.botones_respuestas = []
         pregunta_actual = self.preguntas[self.indice_pregunta]
         posicion_y_inicial = 380
+        
         for opcion in pregunta_actual.opciones:
             boton = Boton(opcion, Coordenada(VENTANA_CENTRO_WIDTH, posicion_y_inicial), "JUEGO")
             self.botones_respuestas.append(boton)
