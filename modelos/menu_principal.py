@@ -16,15 +16,16 @@ class MenuPrincipal:
 
     def crear_botones(self):
         self.botones.append(Boton('Jugar', Coordenada(VENTANA_CENTRO_WIDTH, 100)))
-        self.botones.append(Boton('Configuracion', Coordenada(VENTANA_CENTRO_WIDTH, 200)))
-        self.botones.append(Boton('Salir', Coordenada(VENTANA_CENTRO_WIDTH, 300)))
+        self.botones.append(Boton('Rankings', Coordenada(VENTANA_CENTRO_WIDTH, 175)))   
+        self.botones.append(Boton('Configuracion', Coordenada(VENTANA_CENTRO_WIDTH, 250)))
+        self.botones.append(Boton('Salir', Coordenada(VENTANA_CENTRO_WIDTH, 325)))
 
     def renderizar(self):
         # Renderizar background
         self.renderizar_background()
 
-        # Escalar menu
-        self.menu_contenedor = pygame.transform.scale(self.menu_contenedor, (500, 500))
+        # Renderizar contenedor
+        self.renderizar_contenedor()
         
         # Agregar titulo
         self.renderizar_titulo()
@@ -42,6 +43,9 @@ class MenuPrincipal:
     def renderizar_background(self):
         background = pygame.transform.scale(BACKGROUND_MENU_PRINCIPAL, VENTANA_MEDIDA)
         self.ventana.blit(background, (0, 0))
+
+    def renderizar_contenedor(self):
+        self.menu_contenedor = pygame.transform.scale(self.menu_contenedor, (500, 600))
 
     def renderizar_titulo(self):
         text = FUENTE_30.render(MENU_PRINCIPAL_TITULO, True, MENU_PRINCIPAL_TITULO_COLOR)
@@ -64,7 +68,7 @@ class MenuPrincipal:
             elif evento.type == pygame.MOUSEMOTION:
                 self.manejar_hover_de_botones(evento)
             elif evento.type == pygame.MOUSEBUTTONDOWN:
-                self.ventana_actual = self.manejar_evento_click(evento)
+                self.manejar_evento_click(evento)
 
         self.renderizar()
 
@@ -102,7 +106,10 @@ class MenuPrincipal:
             boton_rect = boton.obtener_rectangulo(self.menu_contenedor, self.posicion)
             if boton_rect.collidepoint(evento.pos):
                 if boton.label == "Salir":
-                    return VENTANA_SALIR
+                    self.ventana_actual = VENTANA_SALIR
                 elif boton.label == "Jugar":
-                    return VENTANA_JUGAR
-        return VENTANA_MENU_PRINCIPAL
+                    self.ventana_actual = VENTANA_JUGAR
+                elif boton.label == "Rankings":
+                    self.ventana_actual = VENTANA_RANKING
+                elif boton.label == "Configuracion":
+                    self.ventana_actual = VENTANA_CONFIGURACION
