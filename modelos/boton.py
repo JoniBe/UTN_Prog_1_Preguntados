@@ -23,7 +23,7 @@ class Boton:
     def disparar_efecto_hover(self):
         self.imagen = self.imagen_original.copy()
         brillo = pygame.Surface(self.imagen.get_size(), pygame.SRCALPHA)
-        brillo.fill((25, 25, 25, 0))
+        brillo.fill((30, 30, 30, 0))
         self.imagen.blit(brillo, (0, 0), special_flags=pygame.BLEND_RGB_ADD)
         self.agregar_label()
 
