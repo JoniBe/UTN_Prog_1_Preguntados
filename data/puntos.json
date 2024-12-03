@@ -43,5 +43,10 @@
         "puntos": 1000,
         "fecha": "03/12/2024",
         "nombre": "JONI"
+    },
+    {
+        "puntos": 250,
+        "fecha": "03/12/2024",
+        "nombre": "JONA"
     }
 ]
