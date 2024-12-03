@@ -5,7 +5,7 @@ from modelos.boton import Boton
 from modelos.comodin import Comodin
 from constantes import *
 from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical
-from funciones.manejo_archivos import leer_csv_preguntas
+from funciones.manejo_archivos import leer_csv_preguntas, actualizar_csv_de_preguntas
 from Funciones import mostrar_texto_en_contenedor, reproducir_sonido
 
 pygame.init()
@@ -258,6 +258,12 @@ class Partida:
                 self.vidas -= 1
                 self.acertados_seguidos = 0
                 self.pasar_a_siguiente_pregunta()
+        
+        # Calcular contadores de pregunta
+        pregunta_actual.recalcular_contadores(es_acierto)
+
+        # Actualizar archivo csv
+        actualizar_csv_de_preguntas(self.preguntas)
 
     def verificar_si_comodin_esta_activo(self, tipo_comodin: str) -> bool:
         for i in range(len(self.botones_comodines)):
