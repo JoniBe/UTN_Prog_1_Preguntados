@@ -1,6 +1,7 @@
 import os
 import json
 from modelos.pregunta import Pregunta
+from modelos.respuesta import Respuesta
 from modelos.puntaje import Puntaje
 from constantes import PREGUNTAS_CSV_PATH, RANKING_JSON_PATH
 
@@ -12,7 +13,10 @@ def leer_csv_preguntas() -> list[Pregunta]:
             for linea in archivo:
                 linea_aux = linea.replace("\n","")
                 lista_valores = linea_aux.split(",")
-                mi_pregunta = Pregunta(lista_valores[0], lista_valores[1:5],lista_valores[5])
+                lista_respuestas = []
+                for respuesta in lista_valores[1:5]:
+                    lista_respuestas.append(Respuesta(respuesta))
+                mi_pregunta = Pregunta(lista_valores[0], lista_respuestas, lista_valores[5])
                 lista_preguntas.append(mi_pregunta)
     else:
         return False
