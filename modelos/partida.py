@@ -235,12 +235,12 @@ class Partida:
         if es_acierto:
             reproducir_sonido(SONIDO_ACIERTO)
 
-            self.puntuacion += PUNTUACION_ACIERTO
-
             # Verificar si comodin x2 está activo, si es así, multiplicar la puntuación por 2
             tiene_x2 = self.verificar_si_comodin_esta_activo(COMODIN_TIPO_X2)
             if tiene_x2:
-                self.puntuacion *= 2
+                self.puntuacion += PUNTUACION_ACIERTO * 2
+            else:
+                self.puntuacion += PUNTUACION_ACIERTO
 
             self.acertados_seguidos += 1
 
@@ -284,3 +284,5 @@ class Partida:
         self.usuario = ""
         self.acertados_seguidos = 0
         self.tiempo = TIEMPO_INICIAL
+        for comodin in self.botones_comodines:
+            comodin.resetear_comodin()
