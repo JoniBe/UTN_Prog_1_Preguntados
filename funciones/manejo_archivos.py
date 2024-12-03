@@ -89,3 +89,12 @@ def actualizar_csv_de_preguntas(listado_preguntas: list[Pregunta]):
         return True
     else:
         return False
+    
+def generar_json(nombre_archivo:str, lista:list, nombre:str) -> bool: 
+    if len(nombre) > 0:
+        with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
+            contenido = json.load(archivo)
+        contenido.extend(lista)    
+    
+        with open(nombre_archivo,'w') as archivo:
+            json.dump(contenido, archivo, indent=4)
