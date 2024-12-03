@@ -2,7 +2,7 @@ import pygame
 from modelos.coordenada import Coordenada
 from constantes import *
 from funciones.auxiliares import calcular_centro_horizontal
-from Funciones import mostrar_texto_en_contenedor
+from funciones.componentes import mostrar_texto_en_contenedor
 
 # Campo
 class Campo:

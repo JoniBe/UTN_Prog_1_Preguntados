@@ -4,8 +4,8 @@ from modelos.campo import Campo
 from modelos.boton import Boton
 from modelos.coordenada import Coordenada
 from modelos.partida import Partida
-from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical
-from Funciones import obtener_fecha, generar_json
+from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical, obtener_fecha
+from funciones.manejo_archivos import generar_json
 
 # PARTIDA FINALIZADA
 class PartidaFinalizada:

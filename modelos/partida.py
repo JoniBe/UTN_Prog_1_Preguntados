@@ -6,7 +6,8 @@ from modelos.comodin import Comodin
 from constantes import *
 from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical
 from funciones.manejo_archivos import leer_csv_preguntas, actualizar_csv_de_preguntas
-from Funciones import mostrar_texto_en_contenedor, reproducir_sonido
+from funciones.componentes import mostrar_texto_en_contenedor
+from funciones.auxiliares import reproducir_sonido
 
 pygame.init()
 pygame.mixer.init()
