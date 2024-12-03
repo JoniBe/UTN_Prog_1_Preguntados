@@ -1,15 +1,22 @@
 import pygame
 from modelos.coordenada import Coordenada
 from constantes import *
-from funciones.auxiliares import calcular_centro_horizontal
+from funciones.auxiliares import calcular_centro_horizontal, calcular_centro_vertical
 
 # Boton
 class Boton:
-    def __init__(self, label: str, posicion: Coordenada, tipo: str = BOTON_TIPO_MENU):
+    def __init__(self, label: str, posicion: Coordenada, tipo: str = BOTON_TIPO_MENU, icono: pygame.Surface = None):
         if tipo == BOTON_TIPO_MENU:
             self.imagen = pygame.transform.scale(BOTON_VERDE, (BOTON_ESCALADO_ANCHO, BOTON_ESCALADO_ALTO))
         elif tipo == BOTON_TIPO_RESPUESTA:
             self.imagen = pygame.transform.scale(BOTON_AZUL, (BOTON_ESCALADO_ANCHO + 200, BOTON_ESCALADO_ALTO))
+        elif tipo == BOTON_TIPO_VOLUMEN:
+            contenedor = pygame.transform.scale(CONTENEDOR_BOTON_VOLUMEN, (75, 75))
+            boton_volumen = pygame.transform.scale(icono, (50, 50))
+            posicion_x = calcular_centro_horizontal(contenedor, boton_volumen)
+            posicion_y = calcular_centro_vertical(contenedor, boton_volumen)
+            contenedor.blit(boton_volumen, (posicion_x, posicion_y))
+            self.imagen = contenedor
         else:
             self.imagen = pygame.transform.scale(BOTON_AZUL, (BOTON_ESCALADO_ANCHO, BOTON_ESCALADO_ALTO))
 
@@ -17,13 +24,15 @@ class Boton:
         self.label = label
         self.posicion = posicion
         self.rectangulo = None
+        self.tipo = tipo
         self.agregar_label()
 
     def agregar_label(self):
-        max_width, max_height = self.imagen.get_size()
-        fuente = pygame.font.Font(FUENTE_PATH, 15)
-        text = fuente.render(self.label, True, (255, 255, 255))
-        self.imagen.blit(text, (max_width // 2 - text.get_width() // 2, max_height // 2 - text.get_height() // 2))
+        if self.tipo != BOTON_TIPO_VOLUMEN:
+            max_width, max_height = self.imagen.get_size()
+            fuente = pygame.font.Font(FUENTE_PATH, 15)
+            text = fuente.render(self.label, True, (255, 255, 255))
+            self.imagen.blit(text, (max_width // 2 - text.get_width() // 2, max_height // 2 - text.get_height() // 2))
 
     def disparar_efecto_hover(self):
         self.imagen = self.imagen_original.copy()
