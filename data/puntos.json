@@ -8,5 +8,15 @@
         "puntos": 150,
         "fecha": "30/11/2024",
         "nombre": "HOLA"
+    },
+    {
+        "puntos": 50,
+        "fecha": "03/12/2024",
+        "nombre": "joniii"
+    },
+    {
+        "puntos": -150,
+        "fecha": "03/12/2024",
+        "nombre": "oki"
     }
 ]
