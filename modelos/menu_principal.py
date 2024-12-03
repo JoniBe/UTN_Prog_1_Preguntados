@@ -73,22 +73,6 @@ class MenuPrincipal:
         self.renderizar()
 
         return self.ventana_actual
-
-        # for evento in cola_eventos:
-        #     if evento.type == pygame.QUIT:
-        #         retorno = VENTANA_SALIR
-        #     elif evento.type == pygame.MOUSEBUTTONDOWN:
-        #         for i in range(len(self.botones)):
-        #             if self.botones[i].rectangulo.collidepoint(evento.pos):
-        #                 CLICK_SONIDO.play()
-        #             if i == BOTON_JUGAR:
-        #                 retorno = "juego"
-        #             elif i == BOTON_CONFIG:
-        #                 retorno = "configuraciones"
-        #             elif i == BOTON_RANKINGS:
-        #                 retorno = "rankings"
-        #             elif i == BOTON_SALIR:
-        #                 retorno = "salir"
         
     def manejar_hover_de_botones(self, evento: pygame.event.Event) -> bool:
         mouse_rect = pygame.Rect(evento.pos, [1,1])
