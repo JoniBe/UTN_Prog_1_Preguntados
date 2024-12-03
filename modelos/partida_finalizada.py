@@ -108,7 +108,7 @@ class PartidaFinalizada:
             "nombre": self.usuario
         }
         lista_puntuacion.append(informacion)
-        generar_json("puntos.json", lista_puntuacion, self.usuario)
+        generar_json(RANKING_JSON_PATH, lista_puntuacion, self.usuario)
 
     def mostrar(self, cola_eventos: list[pygame.event.Event], ventana_actual: str, partida: Partida) -> str:
         self.ventana_actual = ventana_actual
