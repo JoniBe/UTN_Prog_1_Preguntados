@@ -67,3 +67,8 @@ class Comodin:
             self.cantidad -= 1
             self.surface = self.surface_original.copy()
             self.renderizar_cantidad()
+
+    def resetear_comodin(self):
+        self.utilizado = False
+        self.cantidad = 0
+        self.crear_comodin()
