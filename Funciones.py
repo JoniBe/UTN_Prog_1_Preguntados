@@ -90,7 +90,7 @@ def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_er
         
         if bandera_x2 == True:
             reproducir_sonido(sonido_acierto)
-            print(f"Correcto{juego["acertados_seguidos"]}")
+            print(f"Correcto{juego['acertados_seguidos']}")
             juego["puntuacion"] += PUNTUACION_ACIERTO * 2
             juego["acertados_seguidos"] += 1
 
@@ -102,7 +102,7 @@ def gestionar_puntuacion(lista_preguntas, juego,btn, cantidad_segundos,sonido_er
                 juego["acertados_seguidos"] = 0
         else:
             reproducir_sonido(sonido_acierto)
-            print(f"Correcto{juego["acertados_seguidos"]}")
+            print(f"Correcto{juego['acertados_seguidos']}")
             juego["puntuacion"] += PUNTUACION_ACIERTO
             juego["acertados_seguidos"] += 1
 
