@@ -16,9 +16,10 @@ class MenuPrincipal:
 
     def crear_botones(self):
         self.botones.append(Boton('Jugar', Coordenada(VENTANA_CENTRO_WIDTH, 100)))
-        self.botones.append(Boton('Rankings', Coordenada(VENTANA_CENTRO_WIDTH, 175)))   
-        self.botones.append(Boton('Configuracion', Coordenada(VENTANA_CENTRO_WIDTH, 250)))
-        self.botones.append(Boton('Salir', Coordenada(VENTANA_CENTRO_WIDTH, 325)))
+        self.botones.append(Boton('Rankings', Coordenada(VENTANA_CENTRO_WIDTH, 175)))
+        self.botones.append(Boton('Estadisticas', Coordenada(VENTANA_CENTRO_WIDTH, 250)))
+        self.botones.append(Boton('Configuracion', Coordenada(VENTANA_CENTRO_WIDTH, 325)))
+        self.botones.append(Boton('Salir', Coordenada(VENTANA_CENTRO_WIDTH, 400)))
 
     def renderizar(self):
         # Renderizar background
@@ -95,5 +96,7 @@ class MenuPrincipal:
                     self.ventana_actual = VENTANA_JUGAR
                 elif boton.label == "Rankings":
                     self.ventana_actual = VENTANA_RANKING
+                elif boton.label == "Estadisticas":
+                    self.ventana_actual = VENTANA_ESTADISTICAS
                 elif boton.label == "Configuracion":
                     self.ventana_actual = VENTANA_CONFIGURACION
