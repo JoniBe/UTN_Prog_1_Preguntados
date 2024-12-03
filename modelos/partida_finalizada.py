@@ -72,7 +72,7 @@ class PartidaFinalizada:
         mouse_rect = pygame.Rect(evento.pos, [1,1])
 
         boton_rect = self.boton_aceptar.rectangulo
-        if mouse_rect.colliderect(boton_rect):
+        if mouse_rect and mouse_rect.colliderect(boton_rect):
             self.boton_aceptar.disparar_efecto_hover()
         else:
             self.boton_aceptar.remover_efecto_hover()
