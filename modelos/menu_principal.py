@@ -19,7 +19,8 @@ class MenuPrincipal:
         self.botones.append(Boton('Rankings', Coordenada(VENTANA_CENTRO_WIDTH, 175)))
         self.botones.append(Boton('Estadisticas', Coordenada(VENTANA_CENTRO_WIDTH, 250)))
         self.botones.append(Boton('Configuracion', Coordenada(VENTANA_CENTRO_WIDTH, 325)))
-        self.botones.append(Boton('Salir', Coordenada(VENTANA_CENTRO_WIDTH, 400)))
+        self.botones.append(Boton('Customizar', Coordenada(VENTANA_CENTRO_WIDTH, 400)))
+        self.botones.append(Boton('Salir', Coordenada(VENTANA_CENTRO_WIDTH, 475)))
 
     def renderizar(self):
         # Renderizar background
@@ -46,13 +47,13 @@ class MenuPrincipal:
         self.ventana.blit(background, (0, 0))
 
     def renderizar_contenedor(self):
-        self.menu_contenedor = pygame.transform.scale(self.menu_contenedor, (500, 600))
+        self.menu_contenedor = pygame.transform.scale(self.menu_contenedor, (500, 680))
 
     def renderizar_titulo(self):
         text = FUENTE_30.render(MENU_PRINCIPAL_TITULO, True, MENU_PRINCIPAL_TITULO_COLOR)
         text_sombra = FUENTE_30.render(MENU_PRINCIPAL_TITULO, True, MENU_PRINCIPAL_TITULO_COLOR_SOMBRA)
-        self.menu_contenedor.blit(text_sombra, (calcular_centro_horizontal(self.menu_contenedor, text) + 2, 82))
-        self.menu_contenedor.blit(text, (calcular_centro_horizontal(self.menu_contenedor, text), 80))
+        self.menu_contenedor.blit(text_sombra, (calcular_centro_horizontal(self.menu_contenedor, text) + 2, 92))
+        self.menu_contenedor.blit(text, (calcular_centro_horizontal(self.menu_contenedor, text), 90))
 
     def renderizar_botones(self):
         for boton in self.botones:
@@ -90,9 +91,7 @@ class MenuPrincipal:
         for boton in self.botones:
             boton_rect = boton.obtener_rectangulo(self.menu_contenedor, self.posicion)
             if boton_rect.collidepoint(evento.pos):
-                if boton.label == "Salir":
-                    self.ventana_actual = VENTANA_SALIR
-                elif boton.label == "Jugar":
+                if boton.label == "Jugar":
                     self.ventana_actual = VENTANA_JUGAR
                 elif boton.label == "Rankings":
                     self.ventana_actual = VENTANA_RANKING
@@ -100,3 +99,7 @@ class MenuPrincipal:
                     self.ventana_actual = VENTANA_ESTADISTICAS
                 elif boton.label == "Configuracion":
                     self.ventana_actual = VENTANA_CONFIGURACION
+                elif boton.label == "Customizar":
+                    self.ventana_actual = VENTANA_CUSTOMIZAR
+                elif boton.label == "Salir":
+                    self.ventana_actual = VENTANA_SALIR
