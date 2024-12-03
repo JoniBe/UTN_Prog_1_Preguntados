@@ -6,12 +6,12 @@ from Funciones import mostrar_texto_en_contenedor
 
 # Campo
 class Campo:
-    def __init__(self, texto: str, posicion: Coordenada):
-        self.imagen = CAMPO_USUARIO.copy()
+    def __init__(self, texto: str, posicion: Coordenada, fuente: pygame.font.Font = FUENTE_30, campo: pygame.Surface = CAMPO_USUARIO):
+        self.imagen = campo.copy()
         self.texto = texto
         self.posicion = posicion
         self.rectangulo = None
-        mostrar_texto_en_contenedor(self.imagen, self.texto, FUENTE_30)
+        mostrar_texto_en_contenedor(self.imagen, self.texto, fuente)
 
     def obtener_rectangulo(self, contenedor: pygame.Surface, posicion_contenedor: Coordenada = None):
         boton_x = calcular_centro_horizontal(contenedor, self.imagen)
