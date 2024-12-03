@@ -7,6 +7,7 @@ from modelos.menu_principal import MenuPrincipal
 from modelos.ranking import Ranking
 from modelos.configuracion import Configuracion
 from modelos.estadisticas import Estadisticas
+from modelos.customizar import Customizar
 
 # Juego
 class Juego:
@@ -19,6 +20,7 @@ class Juego:
         self.ranking = Ranking(self.ventana)
         self.configuracion = Configuracion(self.ventana)
         self.estadisticas = Estadisticas(self.ventana)
+        self.customizar = Customizar(self.ventana) # TODO: no está completo
         self.reloj = pygame.time.Clock()
         self.corriendo = True
 
@@ -45,6 +47,8 @@ class Juego:
                 self.ventana_actual = self.configuracion.mostrar(cola_eventos, self.ventana_actual)
             elif self.ventana_actual == VENTANA_ESTADISTICAS:
                 self.ventana_actual = self.estadisticas.mostrar(cola_eventos, self.ventana_actual)
+            elif self.ventana_actual == VENTANA_CUSTOMIZAR:
+                self.ventana_actual = self.customizar.mostrar(cola_eventos, self.ventana_actual)
             elif self.ventana_actual == VENTANA_SALIR:
                 self.corriendo = False
 
